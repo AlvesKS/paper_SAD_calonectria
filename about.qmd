@@ -1,0 +1,43 @@
+---
+title: "About the study"
+---
+
+## Effect of Rater Training and Standard Area Diagram Structure on the Accuracy of Estimates of Severity in Calonectria Leaf Blight
+
+**Marcia F. Queiroz^1^†, Kaique S. Alves^1^†, Willian Marlon de Oliveira^1^, Camila F. Paixão^1^, Rafael F. Alfenas^1^, Emerson M. Del Ponte^1^, Acelino C. Alfenas^1^\***
+
+> 1Departamento de Fitopatologia, Universidade Federal de Viçosa, 36570-900, Viçosa, MG, Brazil
+>
+> \*Correspondence author: Acelino C. Alfenas
+>
+> Email: aalfenas\@ufv.br
+>
+> † These authors contributed equally to this study
+
+### Summary
+
+coming soon...
+
+## Original article
+
+::: callout-note
+## This repository contains the data and code for our article:
+
+Queiroz, M.F., Alves, K.S., de Oliveira, W.M., Paixão, C.F., Alfenas, R.F., Del Ponte, E.M., Alfenas, A.C. (YYYY) Effect of Rater Training and Standard Area Diagram Structure on the Accuracy of Estimates of Severity in Calonectria Leaf Blight. Name of journal. https://doi.org/xxx/xxx
+:::
+
+## Pre-print
+
+::: callout-note
+## Our preprint is online on the OSF preprint server:
+
+Queiroz, M.F., Alves, K.S., de Oliveira, W.M., Paixão, C.F., Alfenas, R.F., Del Ponte, E.M., Alfenas, A.C. (2022) Effect of Rater Training and Standard Area Diagram Structure on the Accuracy of Estimates of Severity in Calonectria Leaf Blight. OSF, Accessed 24 May 2022. Online at https://doi.org/xxx/xxx
+:::
+
+## Research compendium
+
+::: callout-note
+## Please cite this research compendium as:
+
+Alves, K. S., Queiroz, M. F., de Oliveira, W. M., Paixão, C. F., Alfenas, R. F., Del Ponte, E. M., & Alfenas, A. C. (2022, May 11). Research Compendium: Effect of Rater Training and Standard Area Diagram Structure on the Accuracy of Estimates of Severity in Calonectria Leaf Blight. https://doi.org/10.17605/OSF.IO/WZ3JE
+:::

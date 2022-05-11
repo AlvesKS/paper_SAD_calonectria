@@ -1,0 +1,34 @@
+---
+title: "About this repository"
+---
+
+## General instructions
+
+This repository contains the codes used to obtain and analyze the data used on a research study. Read about the [study](about.qmd).
+
+The codes used here were written using `R version 4.0.3` and scripted on [Quarto](https://quarto.org/){target="_blank"} (`.qmd`) documents. Follow instruction on the [Get Started page](https://quarto.org/docs/get-started/){target="_blank"} of the Quarto website to run the scripts included in this repository.
+
+::: callout-tip
+
+## Reseach compendium
+
+The full research compendium with data and scripts used for this study is stored in an [Open Science Framework](https://osf.io/){target="_blank"} repository and can be accessed [here](https://osf.io/wz3je/){target="_blank"}. Download the full repository and run the analysis in your machine.
+
+::: 
+
+
+## Meta
+
+### Licensing
+
+**Code**: MIT year: 2022, copyright holder: Kaique S. Alves
+
+### Repository maintainer
+
+**Kaique S. Alves**
+
+-   *D.Sc candidate in the [Plant Pathology graduate program](http://www.dfp.ufv.br/graduate/about-the-program/){target="_blank"} from Universidade Federal de Viçosa in Brazil.*
+
+-   *Visiting Scholar in the [EVADE program](https://blogs.cornell.edu/pethybridgelab/){target="_blank"} of the Plant Pathology & Plant-Microbe Biology Section, School of Integrative Plant Science, Cornell University.*
+
+[**Personal website**](https://kaiquealves.netlify.app/){target="_blank"} \| [**GitHub**](https://github.com/AlvesKS){target="_blank"} \| [**Google Scholar**](https://scholar.google.com.br/citations?user=wTzslqsAAAAJ&hl){target="_blank"}

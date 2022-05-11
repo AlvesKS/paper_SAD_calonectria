@@ -1,0 +1,54 @@
+project:
+  type: website
+
+website:
+  title: "SAD Calonectria leaf blight"
+  page-navigation: true
+  opengraph: true
+  open-graph: true
+  repo-url: https://github.com/AlvesKS/paper_SAD_calonectria
+  repo-actions: [edit, issue]
+  search: 
+    location: navbar
+    type: textbox
+  sidebar:
+    style: "floating"
+    search: true
+    # background: primary
+    contents:
+      - section: Repository
+        contents:
+          - href: index.qmd
+            text: About this repository
+          - href: about.qmd 
+            text: About the study
+      - section: Data analysis
+        contents:
+          - href: validation_calo.qmd
+            text: SAD accuracy
+          - href: window_based_calo.qmd
+            text: Window-based accuracy
+          - href: over_time_accu_calo.qmd
+            text: Persistent accuracy 
+    tools:
+      - icon: twitter
+        href: https://twitter.com/AlvesKS_
+      - icon: github
+        href: https://github.com/AlvesKS/paper_SAD_calonectria
+      - icon: download
+        href: https://osf.io/wz3je/
+  page-footer: "Copyright © 2022 Kaique S. Alves"       
+
+format:
+  html:
+    self-contained: false
+    # theme: cosmo
+    css: styles.css
+    toc: true
+    smooth-scroll: true
+
+theme:
+  light: flatly
+  dark: darkly
+# editor: visual
+

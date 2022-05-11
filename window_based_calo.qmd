@@ -1,0 +1,168 @@
+---
+title: "Window-based accuracy"
+---
+
+```{r eval=TRUE, include=FALSE}
+library(knitr)
+
+knit_print.data.frame <- function (x, options, ...) {
+  rmarkdown::paged_table(x, options) %>% 
+    rmarkdown:::print.paged_df()
+}
+
+registerS3method("knit_print", "data.frame", knit_print.data.frame)
+```
+
+# Libraries
+
+::: {.callout-warning}
+
+# About R packages
+
+Make sure to have all R packages installed before running the analysis described in this website.
+
+:::
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DescTools)
+library(ggthemes)
+library(lemon)
+library(cowplot)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(multcomp)
+library(patchwork)
+library(epiR)
+library(irr)
+library(ggdist)
+```
+
+## Loading dataset 
+
+```{r}
+all_data = read.csv("data/wrangled_data.csv") %>% 
+  mutate(rater = as.factor(rater))%>% 
+  mutate(aid = factor(aid, levels = c("Unaided no-training","Unaided after-training","SAD-aided")))
+```
+
+
+## Accuracy statistics
+
+
+```{r  message=FALSE, warning=FALSE}
+raters = unique(all_data$rater)#i
+sads = unique(all_data$sad_structure)#j
+aid_step = unique(all_data$aid)#k
+wind_box = data.frame()
+
+inter = 15
+
+for(i in seq(0,(100-inter), by = 5) ){
+for(j in 1:length(raters)){
+for(k  in 1:length(aid_step)){
+seg = all_data %>%
+  filter(rater == raters[j],
+         aid == aid_step[k],
+         actual >=0+i & actual <=inter+i) 
+  
+ccc = CCC(seg$actual, seg$estimate)$rho.c$est
+ccc_l = CCC(seg$actual, seg$estimate)$rho.c$lwr.ci
+ccc_u = CCC(seg$actual, seg$estimate)$rho.c$upr.ci
+CB = CCC(seg$actual, seg$estimate)$C.b
+r = cor(seg$actual, seg$estimate)
+
+lil_box = data.frame(interval= inter+i,
+                     rater = raters[j],
+                     sad_structure = unique(seg$sad_structure),
+                     aid = unique(seg$aid),
+                     ccc,
+                     ccc_l,
+                     ccc_u,
+                     CB,
+                     r)
+wind_box = wind_box %>% 
+  bind_rows(lil_box)
+
+}}
+}
+
+as.data.frame(wind_box)
+```
+
+### Viz
+
+#### Accuracy
+
+```{r}
+ccc_win = wind_box %>% 
+  ggplot(aes(interval,ccc, color = aid))+
+  # geom_jitter(color ="gray80", width = 0.2)+
+  # geom_smooth(se =F, size =1.2)+
+  stat_summary(fun.data = "mean_cl_boot")+
+  stat_summary(fun.data = "mean_se", geom = "line", size =1)+
+  scale_x_continuous(breaks = seq(inter, 100, by = 10))+
+  scale_color_colorblind()+
+  theme_minimal_hgrid()+
+  facet_rep_wrap(~sad_structure)+
+  theme(legend.position = "bottom")+
+  labs(x = "Upper window boundery",
+       y = "Overal accuracy (CCC)",
+       color = "")
+ccc_win
+# ggsave("figs/window.png",dpi = 600, height = 4, width = 7)
+```
+
+#### Precision
+
+```{r}
+r_win = wind_box %>% 
+  ggplot(aes(interval,r, color = aid))+
+  # geom_jitter(color ="gray80", width = 0.2)+
+  # geom_smooth(se =F, size =1.2)+
+  stat_summary(fun.data = "mean_cl_boot")+
+  stat_summary(fun.data = "mean_se", geom = "line", size =1)+
+  scale_x_continuous(breaks = seq(inter, 100, by = 10))+
+  scale_color_colorblind()+
+  theme_minimal_hgrid()+
+  facet_rep_wrap(~sad_structure)+
+  theme(legend.position = "bottom")+
+  labs(x = "Upper window boundery",
+       y = "Precision (r)",
+       color  = "")
+r_win
+```
+
+#### Bias
+
+```{r}
+cb_win = wind_box %>% 
+  ggplot(aes(interval,CB, color = aid))+
+  # geom_jitter(color ="gray80", width = 0.2)+
+  # geom_smooth(se =F, size =1.2)+
+  stat_summary(fun.data = "mean_cl_boot")+
+  stat_summary(fun.data = "mean_se", geom = "line", size =1)+
+  scale_x_continuous(breaks = seq(inter, 100, by = 10))+
+  scale_color_colorblind()+
+  theme_minimal_hgrid()+
+  facet_rep_wrap(~sad_structure)+
+  theme(legend.position = "bottom")+
+  labs(x = "Upper window boundery",
+       y = "Generalized bias (Cb)",
+       color ="")
+cb_win
+```
+
+### Figure
+
+```{r message=FALSE, warning=FALSE, fig.height=8, fig.width=7}
+ccc_win + r_win +cb_win+
+  plot_layout(ncol =1,
+              guides = "collect")+
+  plot_annotation(tag_levels = "A") &
+  theme_half_open() &
+  theme(legend.position = "bottom", 
+        strip.background = element_blank())
+ggsave("figs/window.png",dpi = 600, height = 10, width = 9, bg = "white")
+```

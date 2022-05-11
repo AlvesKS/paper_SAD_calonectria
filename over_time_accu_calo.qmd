@@ -1,0 +1,153 @@
+---
+title: "Data analysis"
+---
+
+```{r eval=TRUE, include=FALSE}
+library(knitr)
+
+knit_print.data.frame <- function (x, options, ...) {
+  rmarkdown::paged_table(x, options) %>% 
+    rmarkdown:::print.paged_df()
+}
+
+registerS3method("knit_print", "data.frame", knit_print.data.frame)
+```
+
+
+# Libraries
+
+::: {.callout-warning}
+
+# About R packages
+
+Make sure to have all R packages installed before running the analysis described in this website.
+
+:::
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DescTools)
+library(ggthemes)
+library(lemon)
+library(cowplot)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(multcomp)
+library(patchwork)
+library(epiR)
+library(irr)
+library(ggdist)
+```
+
+
+# Load data
+
+```{r}
+pt_all_data = read.csv( "data/wrangled_7_and_14_days_assesments.csv") %>% 
+  mutate(rater = as.factor(rater))
+pt_all_data
+```
+
+
+## which raters were selected?
+
+```{r}
+selecter_raters = pt_all_data %>% 
+  group_by(rater) %>% 
+  summarise(class = unique(class))
+selecter_raters
+```
+
+#### Agreement plot
+
+```{r}
+pt_all_data %>% 
+  ggplot(aes(actual, estimate))+
+  geom_abline(slope = 1,intercept = 0)+
+  geom_point()+
+  geom_smooth(aes(color = class),se = F ,method = 'lm')+
+  facet_grid(sad_structure~time)
+  
+```
+
+
+### Calculating Stats
+
+```{r}
+pt_stats = pt_all_data %>% 
+  group_by(rater, sad_structure,time,class) %>%
+  summarise(ccc = CCC(estimate, actual)$rho.c$est,
+            r = cor(estimate, actual),
+            cb = CCC(estimate, actual)$C.b,
+            ccc_lower = CCC(estimate, actual)$rho.c$lwr.ci,
+            ccc_upper = CCC(estimate, actual)$rho.c$upr.ci,
+            s.shift = CCC(estimate, actual)$s.shift,
+            l.shift = CCC(estimate, actual)$l.shift) %>% 
+  # filter(aid == "Unaided After-Training") %>% 
+  arrange(-ccc)
+
+
+```
+
+
+# Loading statistics for the the first three rounds
+
+```{r}
+stats_data = read.csv("data/stats_first_three_rounds.csv") %>% 
+  mutate(rater = as.factor(rater))
+```
+
+## gathering data
+
+```{r}
+pt_stats2 = pt_stats %>%
+  bind_rows(
+stats_data %>%
+  filter(rater %in% selecter_raters$rater) %>% 
+  rename(time = aid)
+) %>%
+  dplyr::select(-class) %>% 
+  left_join(selecter_raters, by ="rater") %>% 
+ 
+  mutate(time = factor(time, levels = c("Unaided no-training",
+                                        "Unaided after-training",
+                                        "SAD-aided",
+                                        "After 07 days",
+                                        "After 14 days")))
+
+
+as.data.frame(pt_stats2)
+```
+
+
+#### CCC over-time
+
+```{r}
+ccc_ot = pt_stats2 %>% 
+  ggplot(aes(time, ccc,  group = rater, color=class)) +
+  geom_rect(ymin = 0,ymax = 1, xmin = 3.8, xmax = 5.3, fill = "gray85", alpha=0.05, color = NA)+
+  geom_errorbar(aes(ymin = ccc_lower, ymax = ccc_upper),
+                width = 0,
+                position = position_dodge(width =0.25)
+                )+
+  geom_line(position = position_dodge(width =0.25), size = 0.5)+
+  geom_point(size=2,
+             position = position_dodge(width =0.25)
+             )+
+  facet_rep_wrap(~sad_structure, ncol= 2)+
+  scale_color_calc(labels = c("High inherent accuracy", "Low inherent accuracy"))+
+  theme_half_open(font_size = 12)+
+  background_grid(size.major = 0.1)+
+  theme(axis.text.x = element_text(angle=35, hjust =1),
+        legend.position = "top",
+        strip.background = element_blank())+
+  labs(x = "",
+       y = "Overall accuracy (CCC)",
+       color = "")
+ccc_ot
+ggsave("figs/overtime.png", dpi = 600, height = 4, width = 8, bg = "white")
+
+```
+
+

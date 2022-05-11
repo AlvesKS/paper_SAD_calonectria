@@ -1,0 +1,456 @@
+---
+title: "Data analysis"
+---
+
+```{r eval=TRUE, include=FALSE}
+library(knitr)
+
+knit_print.data.frame <- function (x, options, ...) {
+  rmarkdown::paged_table(x, options) %>% 
+    rmarkdown:::print.paged_df()
+}
+
+registerS3method("knit_print", "data.frame", knit_print.data.frame)
+```
+
+## Libraries 
+
+::: {.callout-warning}
+
+# About R packages
+
+Make sure to have all R packages installed before running the analysis described in this website.
+
+:::
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(DescTools)
+library(ggthemes)
+library(lemon)
+library(cowplot)
+library(lme4)
+library(lmerTest)
+library(emmeans)
+library(multcomp)
+library(patchwork)
+library(epiR)
+library(irr)
+library(ggdist)
+```
+
+
+
+## Loading dataset 
+
+
+
+
+```{r}
+all_data = read.csv("data/wrangled_data.csv") %>% 
+  mutate(rater = as.factor(rater))%>% 
+  mutate(aid = factor(aid, levels = c("Unaided no-training","Unaided after-training","SAD-aided")))
+```
+
+
+## Exploratory analysis
+
+### Number of raters
+
+### Number of leaves
+
+### Severity distribution
+
+### Agreement
+
+```{r}
+all_data %>% 
+  ggplot(aes(actual, estimate))+
+  geom_point(color  ="gray")+
+  geom_abline(intercept = 0, slope = 1, color ="red")+
+  # geom_smooth(color = "black", aes(group = rater), se = F)+
+  facet_grid(sad_structure~aid)+
+  coord_equal()+
+  xlim(0,100)+
+  theme_minimal()
+```
+
+### Error of severity estimates 
+
+```{r}
+all_data %>% 
+  mutate(error = estimate-actual) %>% 
+  group_by(sad_structure, aid) %>% 
+  summarise(mean(error),
+            sd(error)) %>% 
+  as.data.frame()
+```
+
+### Visualizing error
+
+```{r}
+all_data %>% 
+  ggplot(aes(actual, estimate-actual, color = aid))+
+  geom_point(color  ="gray80")+
+  geom_hline(yintercept = 0, color ="black", linetype = "dashed")+
+  geom_smooth(se = F, method = "loess")+
+  facet_rep_grid(sad_structure~aid)+
+  xlim(0,100)+
+  scale_color_colorblind()+
+  theme_half_open(font_size = 10)+
+  # theme_minimal_hgrid(font_size = 10)+
+  labs(x = "Actual severity (%)",
+       y = "Absolute error")+
+  theme(legend.position = "none",
+        strip.background = element_blank())
+
+ggsave("figs/errors.png", dpi = 600, height = 4, width = 6, bg = "white")
+```
+
+
+## Calculating accuracy statistics
+
+```{r}
+stats_data = all_data %>% 
+  group_by(aid, rater, sad_structure) %>% 
+  summarise(ccc = CCC(estimate, actual)$rho.c$est,
+            r = cor(estimate, actual),
+            cb = CCC(estimate, actual)$C.b,
+            ccc_lower = CCC(estimate, actual)$rho.c$lwr.ci,
+            ccc_upper = CCC(estimate, actual)$rho.c$upr.ci,
+            s.shift = CCC(estimate, actual)$s.shift,
+            l.shift = CCC(estimate, actual)$l.shift) %>% 
+  # filter(aid == "Unaided After-Training") %>% 
+  arrange(-ccc)
+as.data.frame(stats_data)
+
+# Saving the stats to use in the over time accuracy analysis
+write.csv(stats_data, "data/stats_first_three_rounds.csv", row.names = F)
+
+```
+
+## Modeling
+### Overall accuracy
+
+```{r}
+mix_ccc =  lmer(ccc ~ aid*sad_structure + (1|rater),
+                            data =stats_data)
+summary(mix_ccc)
+car::Anova(mix_ccc)
+```
+
+
+#### Tukey-test
+
+- Rounds by SAD structure
+```{r}
+em_ccc1 = emmeans(mix_ccc, "aid", by = "sad_structure", type = "response")
+cld_acc = as.data.frame( cld(em_ccc1, Letters = letters) )
+cld(em_ccc1, Letters = letters)
+```
+
+
+- SAD structure by rounds 
+
+```{r}
+em_ccc2 = emmeans(mix_ccc,"sad_structure" , by ="aid", type = "response" )
+cld(em_ccc2, Letters = LETTERS)
+```
+
+
+#### Plot
+
+
+```{r}
+as.data.frame(em_ccc2) %>% 
+  ggplot(aes(aid, emmean, color = sad_structure))+
+  
+  geom_point(data = stats_data,
+             aes(aid, ccc, fill = sad_structure),
+             position = position_jitterdodge(jitter.width = 0.05, dodge.width = 0.3),
+             color = "gray90")+
+  
+  geom_point(position = position_dodge(width = .3),
+             size =3)+
+  geom_errorbar(aes(ymin= lower.CL, ymax = upper.CL),
+                position = position_dodge(width = .3),
+                width = 0,
+                size =1)+
+  geom_text(data = cld_acc, aes(aid,emmean, label = .group),
+            position = position_dodge(width = 0.3),
+            hjust = -1.2, fontface= "bold",
+            show.legend  = F )+
+  scale_color_colorblind()+
+  labs(x = "",
+       y = "Overall accuracy (CCC)",
+       color ="",
+       fill = "")+
+  theme_half_open()+
+  scale_y_continuous(breaks = seq(0.8,1,by = 0.04),
+                     limits = c(0.85,1))+
+  theme(legend.position = "top",
+        # axis.text.x = element_text(angle = 45, hjust = 1)
+        )+
+  scale_x_discrete(limits = c("SAD-aided", "Unaided after-training", "Unaided no-training"))+
+  coord_flip()
+
+  
+ggsave("figs/overall_ccc.png", dpi = 600, height = 3.5,width =6, bg = "white")
+```
+
+
+###  Precision
+
+
+```{r}
+mix_r =  lmer(r ~ aid*sad_structure+(1|rater),
+                            data =stats_data)
+
+summary(mix_r)
+car::Anova(mix_r)
+```
+
+
+#### Tukey-test
+
+- Rounds by SAD structure
+
+```{r}
+em_r1 = emmeans(mix_r, "aid", by = "sad_structure", type = "response")
+cld(em_r1, Letters = letters)
+```
+
+
+- SAD structure by rounds  
+
+```{r}
+em_r2 = emmeans(mix_r,"sad_structure" , by ="aid", type = "response" )
+cld(em_r2, Letters = LETTERS)
+```
+
+###  Bias Correction factor
+
+```{r warning=FALSE}
+# mix_cb =  lmer(cb ~ aid*sad_structure+(1|rater),
+#                             data =stats_data)
+mix_cb =  glmmTMB::glmmTMB(cb ~ aid*sad_structure+(1|rater),
+                            family=list(family="beta",link="logit"),
+                            data =stats_data)
+summary(mix_cb)
+car::Anova(mix_cb)
+```
+
+#### Tukey-test
+
+- Rounds by SAD structure
+
+```{r}
+em_cb1 = emmeans(mix_cb, "aid", by = "sad_structure", type = "response")
+cld(em_cb1, Letters = letters)
+```
+
+- SAD structure by rounds  
+
+```{r}
+em_cb2 = emmeans(mix_cb,"sad_structure" , by ="aid", type = "response" )
+cld(em_cb2, Letters = LETTERS)
+```
+
+### Location shift
+
+```{r}
+mix_l.shift =  lmer(l.shift ~ aid*sad_structure+(1|rater),
+                            data =stats_data)
+summary(mix_l.shift)
+car::Anova(mix_l.shift)
+```
+
+#### Tukey-test
+
+- Rounds by SAD structure
+
+```{r}
+em_l.shift1 = emmeans(mix_l.shift, "aid", by = "sad_structure", type = "response")
+cld(em_l.shift1, Letters = letters)
+```
+
+- SAD structure by rounds  
+
+```{r}
+em_l.shift2 = emmeans(mix_l.shift,"sad_structure" , by ="aid", type = "response" )
+cld(em_l.shift2, Letters = LETTERS)
+```
+
+###  Scale shift
+
+```{r}
+mix_s.shift =  lmer(s.shift ~ aid*sad_structure+(1|rater),
+                            data =stats_data)
+summary(mix_s.shift)
+car::Anova(mix_s.shift)
+```
+
+#### Tukey-test
+
+- Rounds by SAD structure
+
+```{r}
+em_s.shift1 = emmeans(mix_s.shift, "aid", by = "sad_structure", type = "response")
+cld(em_s.shift1, Letters = letters)
+```
+
+- SAD structure by rounds  
+
+```{r}
+em_s.shift2 = emmeans(mix_s.shift,"sad_structure" , by ="aid", type = "response" )
+cld(em_s.shift2, Letters = LETTERS)
+```
+
+
+### Gain in accuracy
+
+#### Unaided no-training to SAD-aided
+
+```{r}
+g1_slope = stats_data %>% 
+  dplyr::select(rater, sad_structure, ccc, aid) %>% 
+  pivot_wider(values_from = ccc,
+              names_from = aid) %>% 
+  mutate(slope1 =`SAD-aided`- `Unaided no-training`) %>% 
+  ggplot(aes(`Unaided no-training`,slope1,fill= slope1, label = rater ))+
+  geom_hline(yintercept = 0)+
+  geom_point(size =2.5, shape = 21)+
+  # geom_text(size = 2)+
+  scale_fill_viridis_c(option ="B", limits =c(-0.1, 0.12))+
+  theme_minimal_hgrid(font_size = 12)+
+  labs(subtitle = expression("Unaided no-training "%->%" SAD-aided"),
+       y = "Gain in accuracy")+
+  facet_rep_wrap(~sad_structure, nrow =1)
+g1_slope
+```
+
+#### Unaided after-training to SAD-aided
+
+```{r}
+g2_slope = stats_data %>% 
+  dplyr::select(rater, sad_structure, ccc, aid) %>% 
+  pivot_wider(values_from = ccc,
+              names_from = aid) %>% 
+  mutate(slope1 = `SAD-aided` - `Unaided after-training`) %>% 
+  ggplot(aes(`Unaided after-training`,slope1, fill = slope1 ))+
+  geom_hline(yintercept = 0)+
+  geom_point(size =2.5, shape = 21)+
+  scale_fill_viridis_c(option ="B", limits =c(-0.1, 0.12))+
+  theme_minimal_hgrid(font_size = 12)+
+  labs(subtitle = expression("Unaided after-training "%->%" SAD-aided"),
+       y = "Gain in accuracy")+
+  facet_rep_wrap(~sad_structure, nrow =1)
+g2_slope
+```
+
+
+#### Unaided no-training to Unaided after-training
+
+```{r}
+g3_slope = stats_data %>% 
+  dplyr::select(rater, sad_structure, ccc, aid) %>% 
+  pivot_wider(values_from = ccc,
+              names_from = aid) %>% 
+  mutate(slope1 =`Unaided after-training`- `Unaided no-training`) %>% 
+  ggplot(aes(`Unaided no-training`,slope1, fill = slope1 ))+
+  geom_hline(yintercept = 0)+
+  geom_point(size =2.5, shape =21)+
+  scale_fill_viridis_c(option ="B", limits =c(-0.1, 0.12))+
+  theme_minimal_hgrid(font_size = 12)+
+  labs(#subtitle = "Un. after-training - Un. no-training",
+       subtitle = expression("Unaided no-training "%->%" Unaided after-training"),
+       y = "Gain in accuracy")+
+  facet_rep_wrap(~sad_structure, nrow =1)
+g3_slope
+# "Un. after-training \u2192 Un. no-training)""\u2192"
+```
+
+#### Figure
+
+```{r fig.height=8, fig.width=7}
+g1_slope+g2_slope+g3_slope+
+  plot_annotation(tag_levels = "A")+
+  plot_layout(guides = "collect", ncol = 1)&
+  scale_x_continuous(limits = c(0.85, 1))&
+  theme_half_open(font_size = 12)&
+  # background_grid()&
+  scale_y_continuous(limits = c(-0.1, 0.12))&
+  theme(plot.subtitle = element_text(face = "bold"),
+        legend.position = "none",
+        strip.text = element_text(hjust = 0, size =10),
+        strip.background = element_blank()
+        )
+ggsave("figs/slope.png",dpi = 600, height = 8, width = 7, bg = "white")
+```
+
+
+## Interrater reliability
+
+### Overall concordance coefficient
+
+```{r  warning=FALSE}
+sads = unique(all_data$sad_structure)
+aid_step = unique(all_data$aid)
+box_occc = NULL
+for(i in 1:length(sads)){
+for(j in 1:length(aid_step)){
+occc_df = all_data %>%
+  filter(sad_structure == sads[i],
+         aid == aid_step[j]) %>% 
+  dplyr::select(leaf, rater, estimate) %>% 
+  spread(rater, estimate, 2:3) %>%  
+  epi.occc(na.rm = FALSE, pairs = TRUE) 
+
+occc_lil = data.frame(sad_structure = sads[i],
+                      aid = aid_step[j],
+                        occc = occc_df$occc,
+                      precision = occc_df$oprec,
+                      accuracy = occc_df$oaccu)
+
+box_occc = bind_rows(box_occc, occc_lil)
+}
+}
+box_occc
+```
+
+
+
+### Intra-class correlation coefficient
+
+```{r warning=FALSE}
+sads = unique(all_data$sad_structure)
+aid_step = unique(all_data$aid)
+box_icc = NULL
+for(i in 1:length(sads)){
+for(j in 1:length(aid_step)){
+iccc_df = all_data %>%
+  filter(sad_structure == sads[i],
+         aid == aid_step[j]) %>% 
+  dplyr::select(leaf, rater, estimate) %>% 
+  spread(rater, estimate, 2:3) %>%  
+  icc(model = "twoway", unit = "single", type = "agreement") 
+
+icc_lil = data.frame(sad_structure = sads[i],
+                      aid = aid_step[j],
+                        icc = iccc_df$value,
+                      lower = iccc_df$lbound,
+                      upper = iccc_df$ubound)
+
+box_icc = bind_rows(box_icc, icc_lil)
+}
+}
+box_icc
+```
+
+
+
+
+
+
+
+

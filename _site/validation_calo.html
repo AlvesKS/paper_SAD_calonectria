@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.194">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>SAD Calonectria leaf blight - Data analysis</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+
+  <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+  <script src="site_libs/quarto-nav/headroom.min.js"></script>
+  <script src="site_libs/clipboard/clipboard.min.js"></script>
+  <meta name="quarto:offset" content="./">
+  <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+  <script src="site_libs/quarto-search/fuse.min.js"></script>
+  <script src="site_libs/quarto-search/quarto-search.js"></script>
+  <link href="./window_based_calo.html" rel="next">
+  <link href="./about.html" rel="prev">
+  <script src="site_libs/quarto-html/quarto.js"></script>
+  <script src="site_libs/quarto-html/popper.min.js"></script>
+  <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="site_libs/quarto-html/anchor.min.js"></script>
+  <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+  <link class="quarto-color-scheme" id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" id="quarto-text-highlighting-styles" href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css">
+  <script src="site_libs/bootstrap/bootstrap.min.js"></script>
+  <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link class="quarto-color-scheme" href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link class="quarto-color-scheme quarto-color-alternate" rel="prefetch" href="site_libs/bootstrap/bootstrap-dark.min.css">
+  <script id="quarto-search-options" type="application/json">{
+    "location": "navbar",
+    "copy-button": false,
+    "collapse-after": 3,
+    "panel-placement": "end",
+    "type": "textbox",
+    "limit": 20,
+    "language": {
+      "search-no-results-text": "No results",
+      "search-matching-documents-text": "matching documents",
+      "search-copy-link-title": "Copy link to search",
+      "search-hide-matches-text": "Hide additional matches",
+      "search-more-match-text": "more match in this document",
+      "search-more-matches-text": "more matches in this document",
+      "search-clear-button-title": "Clear",
+      "search-detached-cancel-button-title": "Cancel",
+      "search-submit-button-title": "Submit"
+    }
+  }</script>
+  <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="SAD Calonectria leaf blight - Data analysis">
+<meta property="og:site-name" content="SAD Calonectria leaf blight">
+</head>
+<body class="floating">
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Data analysis</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">SAD Calonectria leaf blight</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://twitter.com/AlvesKS_" title="" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/AlvesKS/paper_SAD_calonectria" title="" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://osf.io/wz3je/" title="" class="sidebar-tool px-1"><i class="bi bi-download"></i></a>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Repository</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">About this repository</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">About the study</a>
+  </div>
+</li>
+    </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Data analysis</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./validation_calo.html" class="sidebar-item-text sidebar-link active">SAD accuracy</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./window_based_calo.html" class="sidebar-item-text sidebar-link">Window-based accuracy</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./over_time_accu_calo.html" class="sidebar-item-text sidebar-link">Persistent accuracy</a>
+  </div>
+</li>
+    </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+<h2 id="toc-title">On this page</h2>
+<ul>
+<li><a href="#libraries" id="toc-libraries" class="nav-link active" data-scroll-target="#libraries">Libraries</a></li>
+<li><a href="#loading-dataset" id="toc-loading-dataset" class="nav-link" data-scroll-target="#loading-dataset">Loading dataset</a></li>
+<li><a href="#exploratory-analysis" id="toc-exploratory-analysis" class="nav-link" data-scroll-target="#exploratory-analysis">Exploratory analysis</a>
+<ul class="collapse">
+<li><a href="#number-of-raters" id="toc-number-of-raters" class="nav-link" data-scroll-target="#number-of-raters">Number of raters</a></li>
+<li><a href="#number-of-leaves" id="toc-number-of-leaves" class="nav-link" data-scroll-target="#number-of-leaves">Number of leaves</a></li>
+<li><a href="#severity-distribution" id="toc-severity-distribution" class="nav-link" data-scroll-target="#severity-distribution">Severity distribution</a></li>
+<li><a href="#agreement" id="toc-agreement" class="nav-link" data-scroll-target="#agreement">Agreement</a></li>
+<li><a href="#error-of-severity-estimates" id="toc-error-of-severity-estimates" class="nav-link" data-scroll-target="#error-of-severity-estimates">Error of severity estimates</a></li>
+<li><a href="#visualizing-error" id="toc-visualizing-error" class="nav-link" data-scroll-target="#visualizing-error">Visualizing error</a></li>
+</ul></li>
+<li><a href="#calculating-accuracy-statistics" id="toc-calculating-accuracy-statistics" class="nav-link" data-scroll-target="#calculating-accuracy-statistics">Calculating accuracy statistics</a></li>
+<li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">Modeling</a>
+<ul class="collapse">
+<li><a href="#overall-accuracy" id="toc-overall-accuracy" class="nav-link" data-scroll-target="#overall-accuracy">Overall accuracy</a></li>
+<li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision">Precision</a></li>
+<li><a href="#bias-correction-factor" id="toc-bias-correction-factor" class="nav-link" data-scroll-target="#bias-correction-factor">Bias Correction factor</a></li>
+<li><a href="#location-shift" id="toc-location-shift" class="nav-link" data-scroll-target="#location-shift">Location shift</a></li>
+<li><a href="#scale-shift" id="toc-scale-shift" class="nav-link" data-scroll-target="#scale-shift">Scale shift</a></li>
+<li><a href="#gain-in-accuracy" id="toc-gain-in-accuracy" class="nav-link" data-scroll-target="#gain-in-accuracy">Gain in accuracy</a></li>
+</ul></li>
+<li><a href="#interrater-reliability" id="toc-interrater-reliability" class="nav-link" data-scroll-target="#interrater-reliability">Interrater reliability</a>
+<ul class="collapse">
+<li><a href="#overall-concordance-coefficient" id="toc-overall-concordance-coefficient" class="nav-link" data-scroll-target="#overall-concordance-coefficient">Overall concordance coefficient</a></li>
+<li><a href="#intra-class-correlation-coefficient" id="toc-intra-class-correlation-coefficient" class="nav-link" data-scroll-target="#intra-class-correlation-coefficient">Intra-class correlation coefficient</a></li>
+</ul></li>
+</ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/AlvesKS/paper_SAD_calonectria/edit/main/validation_calo.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/AlvesKS/paper_SAD_calonectria/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<header id="title-block-header" class="quarto-title-block default">
+
+<div class="quarto-title"><h1 class="title d-none d-lg-block display-7">Data analysis</h1></div></header>
+
+<section id="libraries" class="level2">
+<h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+About R packages
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Make sure to have all R packages installed before running the analysis described in this website.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lemon)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmerTest)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epiR)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="loading-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="loading-dataset">Loading dataset</h2>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>all_data <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"data/wrangled_data.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rater =</span> <span class="fu">as.factor</span>(rater))<span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">aid =</span> <span class="fu">factor</span>(aid, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Unaided no-training"</span>,<span class="st">"Unaided after-training"</span>,<span class="st">"SAD-aided"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exploratory-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-analysis">Exploratory analysis</h2>
+<section id="number-of-raters" class="level3">
+<h3 class="anchored" data-anchor-id="number-of-raters">Number of raters</h3>
+</section>
+<section id="number-of-leaves" class="level3">
+<h3 class="anchored" data-anchor-id="number-of-leaves">Number of leaves</h3>
+</section>
+<section id="severity-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="severity-distribution">Severity distribution</h3>
+</section>
+<section id="agreement" class="level3">
+<h3 class="anchored" data-anchor-id="agreement">Agreement</h3>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>all_data <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(actual, estimate))<span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color  =</span><span class="st">"gray"</span>)<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">color =</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_smooth(color = "black", aes(group = rater), se = F)+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(sad_structure<span class="sc">~</span>aid)<span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>()<span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">100</span>)<span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="error-of-severity-estimates" class="level3">
+<h3 class="anchored" data-anchor-id="error-of-severity-estimates">Error of severity estimates</h3>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>all_data <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">error =</span> estimate<span class="sc">-</span>actual) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sad_structure, aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">mean</span>(error),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">sd</span>(error)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'sad_structure'. You can override using the `.groups` argument.</code></pre>
+</div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["sad_structure"],"name":[1],"type":["chr"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["mean(error)"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd(error)"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Amended-linear","2":"Unaided no-training","3":"-0.5174044","4":"9.786081"},{"1":"Amended-linear","2":"Unaided after-training","3":"1.4500904","4":"9.005804"},{"1":"Amended-linear","2":"SAD-aided","3":"-1.0625390","4":"7.202477"},{"1":"Linear","2":"Unaided no-training","3":"-3.1364003","4":"9.360839"},{"1":"Linear","2":"Unaided after-training","3":"-1.6135742","4":"8.461541"},{"1":"Linear","2":"SAD-aided","3":"0.8402795","4":"7.770911"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizing-error" class="level3">
+<h3 class="anchored" data-anchor-id="visualizing-error">Visualizing error</h3>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>all_data <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(actual, estimate<span class="sc">-</span>actual, <span class="at">color =</span> aid))<span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color  =</span><span class="st">"gray80"</span>)<span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span><span class="st">"black"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)<span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> F, <span class="at">method =</span> <span class="st">"loess"</span>)<span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_rep_grid</span>(sad_structure<span class="sc">~</span>aid)<span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">100</span>)<span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_colorblind</span>()<span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_half_open</span>(<span class="at">font_size =</span> <span class="dv">10</span>)<span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># theme_minimal_hgrid(font_size = 10)+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Actual severity (%)"</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Absolute error"</span>)<span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>`geom_smooth()` using formula 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"figs/errors.png"</span>, <span class="at">dpi =</span> <span class="dv">600</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>`geom_smooth()` using formula 'y ~ x'</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="calculating-accuracy-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-accuracy-statistics">Calculating accuracy statistics</h2>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>stats_data <span class="ot">=</span> all_data <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(aid, rater, sad_structure) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">ccc =</span> <span class="fu">CCC</span>(estimate, actual)<span class="sc">$</span>rho.c<span class="sc">$</span>est,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">r =</span> <span class="fu">cor</span>(estimate, actual),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">cb =</span> <span class="fu">CCC</span>(estimate, actual)<span class="sc">$</span>C.b,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">ccc_lower =</span> <span class="fu">CCC</span>(estimate, actual)<span class="sc">$</span>rho.c<span class="sc">$</span>lwr.ci,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">ccc_upper =</span> <span class="fu">CCC</span>(estimate, actual)<span class="sc">$</span>rho.c<span class="sc">$</span>upr.ci,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">s.shift =</span> <span class="fu">CCC</span>(estimate, actual)<span class="sc">$</span>s.shift,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">l.shift =</span> <span class="fu">CCC</span>(estimate, actual)<span class="sc">$</span>l.shift) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter(aid == "Unaided After-Training") %&gt;% </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>ccc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'aid', 'rater'. You can override using the `.groups` argument.</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(stats_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["aid"],"name":[1],"type":["fct"],"align":["left"]},{"label":["rater"],"name":[2],"type":["fct"],"align":["left"]},{"label":["sad_structure"],"name":[3],"type":["chr"],"align":["left"]},{"label":["ccc"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["r"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["cb"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["ccc_lower"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["ccc_upper"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["s.shift"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["l.shift"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"Unaided after-training","2":"4","3":"Linear","4":"0.9846788","5":"0.9896779","6":"0.9949487","7":"0.9738323","8":"0.9910498","9":"1.0679444","10":"-0.0763618981"},{"1":"SAD-aided","2":"18","3":"Linear","4":"0.9844680","5":"0.9855102","6":"0.9989425","7":"0.9726619","8":"0.9911983","9":"1.0458699","10":"0.0102733907"},{"1":"Unaided after-training","2":"18","3":"Linear","4":"0.9841190","5":"0.9871695","6":"0.9969099","7":"0.9730555","8":"0.9906613","9":"1.0789095","10":"0.0206917318"},{"1":"SAD-aided","2":"37","3":"Amended-linear","4":"0.9839150","5":"0.9858796","6":"0.9980073","7":"0.9719860","8":"0.9907880","9":"1.0577005","10":"0.0290808945"},{"1":"SAD-aided","2":"29","3":"Amended-linear","4":"0.9821363","5":"0.9825749","6":"0.9995536","7":"0.9680083","8":"0.9900566","9":"0.9899652","10":"0.0281343164"},{"1":"SAD-aided","2":"17","3":"Linear","4":"0.9815809","5":"0.9838599","6":"0.9976836","7":"0.9673491","8":"0.9896420","9":"1.0341276","10":"-0.0593073804"},{"1":"SAD-aided","2":"28","3":"Amended-linear","4":"0.9813002","5":"0.9814367","6":"0.9998609","7":"0.9665566","8":"0.9895785","9":"1.0164990","10":"0.0032353292"},{"1":"SAD-aided","2":"30","3":"Linear","4":"0.9799119","5":"0.9807584","6":"0.9991370","7":"0.9644661","8":"0.9886825","9":"1.0420895","10":"-0.0052540950"},{"1":"SAD-aided","2":"26","3":"Linear","4":"0.9799074","5":"0.9838856","6":"0.9959566","7":"0.9654277","8":"0.9883586","9":"1.0744699","10":"-0.0543901488"},{"1":"Unaided no-training","2":"31","3":"Amended-linear","4":"0.9792259","5":"0.9822003","6":"0.9969717","7":"0.9643217","8":"0.9879422","9":"1.0785677","10":"-0.0187565718"},{"1":"Unaided after-training","2":"14","3":"Linear","4":"0.9777992","5":"0.9829198","6":"0.9947904","7":"0.9625285","8":"0.9868883","9":"1.0958567","10":"-0.0457044858"},{"1":"SAD-aided","2":"11","3":"Amended-linear","4":"0.9774147","5":"0.9784815","6":"0.9989097","7":"0.9597481","8":"0.9873773","9":"1.0234667","10":"-0.0405572464"},{"1":"SAD-aided","2":"31","3":"Amended-linear","4":"0.9772377","5":"0.9828196","6":"0.9943205","7":"0.9607319","8":"0.9868521","9":"1.0723971","10":"-0.0808474488"},{"1":"SAD-aided","2":"35","3":"Amended-linear","4":"0.9772359","5":"0.9787653","6":"0.9984375","7":"0.9596737","8":"0.9871997","9":"1.0389498","10":"-0.0408628709"},{"1":"SAD-aided","2":"25","3":"Amended-linear","4":"0.9765278","5":"0.9788017","6":"0.9976769","7":"0.9581961","8":"0.9868747","9":"1.0192911","10":"0.0655133276"},{"1":"SAD-aided","2":"4","3":"Linear","4":"0.9752643","5":"0.9758543","6":"0.9993954","7":"0.9560853","8":"0.9861266","9":"1.0349838","10":"-0.0052361512"},{"1":"SAD-aided","2":"20","3":"Linear","4":"0.9750919","5":"0.9765089","6":"0.9985489","7":"0.9562336","8":"0.9858831","9":"1.0553843","10":"0.0001751271"},{"1":"Unaided after-training","2":"41","3":"Amended-linear","4":"0.9749941","5":"0.9833032","6":"0.9915499","7":"0.9562228","8":"0.9857750","9":"0.9822810","10":"-0.1293236150"},{"1":"Unaided after-training","2":"31","3":"Amended-linear","4":"0.9749201","5":"0.9847996","6":"0.9899680","7":"0.9578803","8":"0.9851187","9":"1.0971166","10":"-0.1080305576"},{"1":"SAD-aided","2":"10","3":"Amended-linear","4":"0.9749056","5":"0.9772322","6":"0.9976192","7":"0.9555734","8":"0.9858861","9":"1.0384951","10":"0.0578446597"},{"1":"SAD-aided","2":"12","3":"Linear","4":"0.9748847","5":"0.9760241","6":"0.9988326","7":"0.9556763","8":"0.9858291","9":"1.0477753","10":"0.0126154176"},{"1":"Unaided after-training","2":"28","3":"Amended-linear","4":"0.9745186","5":"0.9754590","6":"0.9990360","7":"0.9549325","8":"0.9856551","9":"1.0435281","10":"-0.0106895813"},{"1":"SAD-aided","2":"22","3":"Linear","4":"0.9739724","5":"0.9811708","6":"0.9926635","7":"0.9562218","8":"0.9845824","9":"1.1047465","10":"0.0696414679"},{"1":"SAD-aided","2":"6","3":"Linear","4":"0.9738767","5":"0.9751808","6":"0.9986627","7":"0.9536031","8":"0.9853580","9":"1.0319837","10":"0.0410719999"},{"1":"SAD-aided","2":"2","3":"Linear","4":"0.9733995","5":"0.9803267","6":"0.9929339","7":"0.9530900","8":"0.9849837","9":"1.0057375","10":"0.1191640894"},{"1":"Unaided after-training","2":"37","3":"Amended-linear","4":"0.9730601","5":"0.9743859","6":"0.9986394","7":"0.9519944","8":"0.9849531","9":"1.0175589","10":"0.0492128430"},{"1":"Unaided after-training","2":"7","3":"Amended-linear","4":"0.9725158","5":"0.9742084","6":"0.9982626","7":"0.9513725","8":"0.9845388","9":"1.0414306","10":"0.0428099595"},{"1":"SAD-aided","2":"3","3":"Amended-linear","4":"0.9722265","5":"0.9806003","6":"0.9914605","7":"0.9512363","8":"0.9842545","9":"1.0050071","10":"0.1311528772"},{"1":"SAD-aided","2":"33","3":"Linear","4":"0.9715099","5":"0.9753530","6":"0.9960598","7":"0.9508409","8":"0.9835618","9":"1.0832442","10":"0.0389172611"},{"1":"SAD-aided","2":"14","3":"Linear","4":"0.9713763","5":"0.9805815","6":"0.9906126","7":"0.9498746","8":"0.9837317","9":"1.0075985","10":"-0.1374609107"},{"1":"Unaided no-training","2":"36","3":"Linear","4":"0.9713054","5":"0.9754247","6":"0.9957769","7":"0.9504086","8":"0.9834713","9":"1.0809823","10":"0.0491437896"},{"1":"SAD-aided","2":"21","3":"Amended-linear","4":"0.9711990","5":"0.9776621","6":"0.9933892","7":"0.9493755","8":"0.9836934","9":"1.0376721","10":"0.1092794231"},{"1":"SAD-aided","2":"40","3":"Linear","4":"0.9705442","5":"0.9723734","6":"0.9981188","7":"0.9483734","8":"0.9832756","9":"1.0616240","10":"0.0138725331"},{"1":"SAD-aided","2":"13","3":"Linear","4":"0.9700493","5":"0.9734477","6":"0.9965090","7":"0.9483793","8":"0.9827032","9":"1.0866667","10":"-0.0097205077"},{"1":"Unaided after-training","2":"26","3":"Linear","4":"0.9690842","5":"0.9701217","6":"0.9989305","7":"0.9453880","8":"0.9825906","9":"1.0458656","10":"-0.0114007111"},{"1":"Unaided after-training","2":"3","3":"Amended-linear","4":"0.9687392","5":"0.9720943","6":"0.9965486","7":"0.9459361","8":"0.9820133","9":"1.0832163","10":"0.0231047853"},{"1":"Unaided after-training","2":"1","3":"Amended-linear","4":"0.9682954","5":"0.9737216","6":"0.9944274","7":"0.9438521","8":"0.9821951","9":"1.0056659","10":"-0.1057154490"},{"1":"SAD-aided","2":"23","3":"Linear","4":"0.9680032","5":"0.9773915","6":"0.9903945","7":"0.9450086","8":"0.9814742","9":"1.0802960","10":"-0.1158840710"},{"1":"Unaided after-training","2":"30","3":"Linear","4":"0.9669006","5":"0.9843562","6":"0.9822670","7":"0.9472369","8":"0.9793139","9":"1.1567574","10":"0.1219156757"},{"1":"Unaided after-training","2":"27","3":"Amended-linear","4":"0.9668115","5":"0.9726995","6":"0.9939468","7":"0.9439810","8":"0.9804311","9":"1.1148578","10":"0.0186274336"},{"1":"SAD-aided","2":"27","3":"Amended-linear","4":"0.9667432","5":"0.9779725","6":"0.9885178","7":"0.9442430","8":"0.9802559","9":"1.1155897","10":"0.1060870634"},{"1":"SAD-aided","2":"7","3":"Amended-linear","4":"0.9663538","5":"0.9685160","6":"0.9977675","7":"0.9411735","8":"0.9808621","9":"1.0675192","10":"0.0143034219"},{"1":"Unaided after-training","2":"13","3":"Linear","4":"0.9657267","5":"0.9747468","6":"0.9907463","7":"0.9407434","8":"0.9802837","9":"1.0730034","10":"0.1171044155"},{"1":"Unaided no-training","2":"24","3":"Amended-linear","4":"0.9656807","5":"0.9664652","6":"0.9991883","7":"0.9390077","8":"0.9808046","9":"1.0212777","10":"-0.0343725487"},{"1":"SAD-aided","2":"1","3":"Amended-linear","4":"0.9656483","5":"0.9692877","6":"0.9962452","7":"0.9402758","8":"0.9803510","9":"1.0767017","10":"-0.0455397447"},{"1":"SAD-aided","2":"38","3":"Amended-linear","4":"0.9653951","5":"0.9713329","6":"0.9938870","7":"0.9387989","8":"0.9805494","9":"0.9950007","10":"0.1107975394"},{"1":"Unaided no-training","2":"43","3":"Amended-linear","4":"0.9652002","5":"0.9660931","6":"0.9990757","7":"0.9381216","8":"0.9805479","9":"1.0159782","10":"0.0399865841"},{"1":"SAD-aided","2":"41","3":"Amended-linear","4":"0.9644274","5":"0.9675080","6":"0.9968160","7":"0.9368378","8":"0.9800896","9":"0.9937443","10":"0.0796805602"},{"1":"Unaided after-training","2":"42","3":"Amended-linear","4":"0.9636162","5":"0.9785543","6":"0.9847345","7":"0.9408741","8":"0.9777112","9":"1.1520759","10":"0.1045465735"},{"1":"Unaided after-training","2":"9","3":"Linear","4":"0.9631326","5":"0.9721932","6":"0.9906803","7":"0.9358092","8":"0.9789521","9":"1.0571215","10":"-0.1254124081"},{"1":"Unaided after-training","2":"25","3":"Amended-linear","4":"0.9630478","5":"0.9665918","6":"0.9963334","7":"0.9351178","8":"0.9790846","9":"1.0561035","10":"-0.0661793626"},{"1":"Unaided no-training","2":"42","3":"Amended-linear","4":"0.9629267","5":"0.9771895","6":"0.9854043","7":"0.9404417","8":"0.9770235","9":"1.1660648","10":"0.0772900025"},{"1":"Unaided after-training","2":"33","3":"Linear","4":"0.9624464","5":"0.9754343","6":"0.9866850","7":"0.9359902","8":"0.9780916","9":"1.0901458","10":"0.1397677257"},{"1":"Unaided after-training","2":"24","3":"Amended-linear","4":"0.9611234","5":"0.9746924","6":"0.9860787","7":"0.9325347","8":"0.9777370","9":"1.0189259","10":"-0.1669856005"},{"1":"SAD-aided","2":"16","3":"Amended-linear","4":"0.9610752","5":"0.9692084","6":"0.9916085","7":"0.9315886","8":"0.9779974","9":"1.0245786","10":"0.1278103398"},{"1":"SAD-aided","2":"19","3":"Linear","4":"0.9599876","5":"0.9684314","6":"0.9912810","7":"0.9318511","8":"0.9766479","9":"1.1091026","10":"0.0828184631"},{"1":"Unaided after-training","2":"39","3":"Linear","4":"0.9598135","5":"0.9641184","6":"0.9955348","7":"0.9307136","8":"0.9768382","9":"1.0942411","10":"-0.0292223174"},{"1":"Unaided no-training","2":"32","3":"Linear","4":"0.9583773","5":"0.9656491","6":"0.9924695","7":"0.9269013","8":"0.9764654","9":"1.0368726","10":"0.1177458342"},{"1":"SAD-aided","2":"24","3":"Amended-linear","4":"0.9583704","5":"0.9675132","6":"0.9905502","7":"0.9294794","8":"0.9755751","9":"1.1183587","10":"-0.0809551396"},{"1":"Unaided after-training","2":"10","3":"Amended-linear","4":"0.9581882","5":"0.9789611","6":"0.9787807","7":"0.9292319","8":"0.9754472","9":"1.0459303","10":"0.2033265745"},{"1":"Unaided after-training","2":"6","3":"Linear","4":"0.9580212","5":"0.9829971","6":"0.9745921","7":"0.9299767","8":"0.9749794","9":"1.0171648","10":"0.2277082061"},{"1":"Unaided after-training","2":"43","3":"Amended-linear","4":"0.9575932","5":"0.9797990","6":"0.9773364","7":"0.9292923","8":"0.9747151","9":"1.0917101","10":"-0.1966575860"},{"1":"Unaided after-training","2":"36","3":"Linear","4":"0.9560354","5":"0.9708314","6":"0.9847595","7":"0.9265375","8":"0.9738496","9":"1.1321035","10":"0.1246507028"},{"1":"Unaided no-training","2":"27","3":"Amended-linear","4":"0.9558196","5":"0.9730767","6":"0.9822654","7":"0.9295346","8":"0.9724398","9":"1.1871398","10":"0.0812959516"},{"1":"Unaided no-training","2":"26","3":"Linear","4":"0.9556758","5":"0.9734600","6":"0.9817310","7":"0.9249031","8":"0.9740089","9":"1.0907292","10":"0.1722525537"},{"1":"Unaided no-training","2":"41","3":"Amended-linear","4":"0.9549893","5":"0.9612929","6":"0.9934426","7":"0.9208631","8":"0.9745939","9":"0.9660604","10":"-0.1095858548"},{"1":"Unaided no-training","2":"4","3":"Linear","4":"0.9549195","5":"0.9595172","6":"0.9952082","7":"0.9205518","8":"0.9746168","9":"1.0324334","10":"0.0927944959"},{"1":"Unaided no-training","2":"11","3":"Amended-linear","4":"0.9547213","5":"0.9600065","6":"0.9944946","7":"0.9201394","8":"0.9745269","9":"0.9795099","10":"0.1031654609"},{"1":"Unaided after-training","2":"17","3":"Linear","4":"0.9544539","5":"0.9629600","6":"0.9911668","7":"0.9199404","8":"0.9742880","9":"0.9997409","10":"-0.1335060074"},{"1":"SAD-aided","2":"8","3":"Amended-linear","4":"0.9536122","5":"0.9677183","6":"0.9854234","7":"0.9193982","8":"0.9735035","9":"0.9822402","10":"0.1710654806"},{"1":"Unaided after-training","2":"21","3":"Amended-linear","4":"0.9535905","5":"0.9648792","6":"0.9883003","7":"0.9239150","8":"0.9718609","9":"1.1660314","10":"0.0059259267"},{"1":"Unaided no-training","2":"10","3":"Amended-linear","4":"0.9533216","5":"0.9583977","6":"0.9947035","7":"0.9176517","8":"0.9737522","9":"0.9837024","10":"0.1018791961"},{"1":"SAD-aided","2":"5","3":"Linear","4":"0.9528907","5":"0.9617030","6":"0.9908368","7":"0.9197074","8":"0.9725561","9":"1.1141995","10":"-0.0824081139"},{"1":"Unaided no-training","2":"38","3":"Amended-linear","4":"0.9524856","5":"0.9545207","6":"0.9978679","7":"0.9164182","8":"0.9732067","9":"1.0478454","10":"-0.0457029360"},{"1":"Unaided no-training","2":"1","3":"Amended-linear","4":"0.9523492","5":"0.9658861","6":"0.9859850","7":"0.9221278","8":"0.9710188","9":"1.1705566","10":"-0.0598109168"},{"1":"Unaided after-training","2":"20","3":"Linear","4":"0.9517154","5":"0.9726794","6":"0.9784472","7":"0.9243352","8":"0.9693457","9":"1.2111641","10":"-0.0850831652"},{"1":"SAD-aided","2":"43","3":"Amended-linear","4":"0.9512204","5":"0.9664219","6":"0.9842703","7":"0.9156568","8":"0.9720076","9":"1.0434717","10":"-0.1736407198"},{"1":"Unaided no-training","2":"23","3":"Linear","4":"0.9507510","5":"0.9577328","6":"0.9927101","7":"0.9158868","8":"0.9713801","9":"1.1143452","10":"-0.0543477647"},{"1":"Unaided after-training","2":"5","3":"Linear","4":"0.9502346","5":"0.9634005","6":"0.9863339","7":"0.9162895","8":"0.9706258","9":"1.1328544","10":"0.1101388498"},{"1":"Unaided no-training","2":"13","3":"Linear","4":"0.9500766","5":"0.9668934","6":"0.9826073","7":"0.9137328","8":"0.9713383","9":"1.0198570","10":"0.1871213907"},{"1":"Unaided after-training","2":"40","3":"Linear","4":"0.9496809","5":"0.9736415","6":"0.9753907","7":"0.9155030","8":"0.9702490","9":"1.0839167","10":"0.2096747823"},{"1":"SAD-aided","2":"36","3":"Linear","4":"0.9491804","5":"0.9708097","6":"0.9777204","7":"0.9139147","8":"0.9702239","9":"1.0754503","10":"-0.2007019130"},{"1":"Unaided no-training","2":"20","3":"Linear","4":"0.9482874","5":"0.9566935","6":"0.9912134","7":"0.9125711","8":"0.9696446","9":"1.1325509","10":"0.0470687341"},{"1":"Unaided after-training","2":"32","3":"Linear","4":"0.9474733","5":"0.9665747","6":"0.9802381","7":"0.9102303","8":"0.9695119","9":"1.0669314","10":"0.1900573639"},{"1":"Unaided no-training","2":"19","3":"Linear","4":"0.9472560","5":"0.9632515","6":"0.9833944","7":"0.9102167","8":"0.9692610","9":"1.1018568","10":"0.1560652164"},{"1":"Unaided no-training","2":"15","3":"Linear","4":"0.9468131","5":"0.9491413","6":"0.9975470","7":"0.9063837","8":"0.9700567","9":"1.0361273","10":"0.0604849611"},{"1":"Unaided no-training","2":"5","3":"Linear","4":"0.9467878","5":"0.9638170","6":"0.9823315","7":"0.9149342","8":"0.9669196","9":"1.2035451","10":"0.0393546711"},{"1":"SAD-aided","2":"42","3":"Amended-linear","4":"0.9465254","5":"0.9537190","6":"0.9924573","7":"0.9072530","8":"0.9694350","9":"1.0797642","10":"0.0964763731"},{"1":"Unaided no-training","2":"29","3":"Amended-linear","4":"0.9463584","5":"0.9504219","6":"0.9957246","7":"0.9059177","8":"0.9696924","9":"0.9542687","10":"-0.0799750017"},{"1":"Unaided after-training","2":"29","3":"Amended-linear","4":"0.9463234","5":"0.9667370","6":"0.9788840","7":"0.9078631","8":"0.9689903","9":"0.9973646","10":"-0.2076922206"},{"1":"Unaided after-training","2":"15","3":"Linear","4":"0.9457780","5":"0.9819636","6":"0.9631498","7":"0.9117976","8":"0.9668940","9":"1.0627728","10":"-0.2698380855"},{"1":"Unaided no-training","2":"6","3":"Linear","4":"0.9444352","5":"0.9586011","6":"0.9852223","7":"0.9039684","8":"0.9681351","9":"1.0606120","10":"0.1628952579"},{"1":"Unaided no-training","2":"28","3":"Amended-linear","4":"0.9444326","5":"0.9527619","6":"0.9912578","7":"0.9031922","8":"0.9683962","9":"1.0590413","10":"0.1197796274"},{"1":"SAD-aided","2":"39","3":"Linear","4":"0.9412737","5":"0.9452216","6":"0.9958233","7":"0.8967097","8":"0.9669459","9":"0.9847358","10":"-0.0902873098"},{"1":"Unaided no-training","2":"39","3":"Linear","4":"0.9399317","5":"0.9426577","6":"0.9971082","7":"0.8955235","8":"0.9658046","9":"1.0775493","10":"-0.0148050754"},{"1":"Unaided after-training","2":"19","3":"Linear","4":"0.9398467","5":"0.9710578","6":"0.9678586","7":"0.8995622","8":"0.9642774","9":"1.0546912","10":"0.2521537001"},{"1":"Unaided no-training","2":"12","3":"Linear","4":"0.9398184","5":"0.9551962","6":"0.9839009","7":"0.8961567","8":"0.9654566","9":"0.9436993","10":"0.1713654314"},{"1":"Unaided no-training","2":"35","3":"Amended-linear","4":"0.9397067","5":"0.9436086","6":"0.9958650","7":"0.8954870","8":"0.9655569","9":"1.0862392","10":"0.0381793227"},{"1":"Unaided no-training","2":"7","3":"Amended-linear","4":"0.9388964","5":"0.9392552","6":"0.9996179","7":"0.8923359","8":"0.9656864","9":"0.9969047","10":"0.0274743049"},{"1":"Unaided after-training","2":"16","3":"Amended-linear","4":"0.9370728","5":"0.9593609","6":"0.9767677","7":"0.8975857","8":"0.9616429","9":"1.1911544","10":"-0.1299753510"},{"1":"Unaided no-training","2":"9","3":"Linear","4":"0.9355918","5":"0.9612357","6":"0.9733219","7":"0.8935693","8":"0.9613609","9":"1.1551606","10":"-0.1843302849"},{"1":"Unaided no-training","2":"34","3":"Amended-linear","4":"0.9342745","5":"0.9349385","6":"0.9992897","7":"0.8844211","8":"0.9630460","9":"1.0041913","10":"0.0374703128"},{"1":"Unaided after-training","2":"2","3":"Linear","4":"0.9309850","5":"0.9602411","6":"0.9695325","7":"0.8834104","8":"0.9595635","9":"0.9616096","10":"0.2476229218"},{"1":"Unaided no-training","2":"21","3":"Amended-linear","4":"0.9300255","5":"0.9613630","6":"0.9674030","7":"0.8852503","8":"0.9577212","9":"1.1616813","10":"-0.2118679827"},{"1":"SAD-aided","2":"15","3":"Linear","4":"0.9280533","5":"0.9310599","6":"0.9967708","7":"0.8752365","8":"0.9589998","9":"1.0794687","10":"-0.0250782447"},{"1":"Unaided after-training","2":"11","3":"Amended-linear","4":"0.9243794","5":"0.9320869","6":"0.9917310","7":"0.8681405","8":"0.9571818","9":"1.0023154","10":"-0.1291147836"},{"1":"Unaided no-training","2":"30","3":"Linear","4":"0.9234049","5":"0.9709221","6":"0.9510597","7":"0.8777113","8":"0.9524572","9":"1.1674598","10":"0.2808862505"},{"1":"Unaided after-training","2":"23","3":"Linear","4":"0.9233644","5":"0.9701966","6":"0.9517291","7":"0.8802238","8":"0.9513686","9":"1.2332934","10":"-0.2393904202"},{"1":"Unaided no-training","2":"33","3":"Linear","4":"0.9222632","5":"0.9291908","6":"0.9925444","7":"0.8670056","8":"0.9551139","9":"1.1160386","10":"-0.0543890436"},{"1":"SAD-aided","2":"34","3":"Amended-linear","4":"0.9216347","5":"0.9311800","6":"0.9897492","7":"0.8650997","8":"0.9550476","9":"1.0879319","10":"0.1166485172"},{"1":"Unaided no-training","2":"8","3":"Amended-linear","4":"0.9216085","5":"0.9510008","6":"0.9690934","7":"0.8671059","8":"0.9543056","9":"0.9951380","10":"0.2525090811"},{"1":"Unaided no-training","2":"14","3":"Linear","4":"0.9212939","5":"0.9567627","6":"0.9629283","7":"0.8693770","8":"0.9530939","9":"1.1083590","10":"0.2576897804"},{"1":"Unaided after-training","2":"35","3":"Amended-linear","4":"0.9203471","5":"0.9637110","6":"0.9550032","7":"0.8691549","8":"0.9520248","9":"1.0750256","10":"-0.2983251873"},{"1":"Unaided no-training","2":"18","3":"Linear","4":"0.9199941","5":"0.9412569","6":"0.9774102","7":"0.8643654","8":"0.9533780","9":"1.1059926","10":"0.1899102584"},{"1":"Unaided no-training","2":"40","3":"Linear","4":"0.9086804","5":"0.9573341","6":"0.9491779","7":"0.8514219","8":"0.9445338","9":"1.1219168","10":"0.3063300334"},{"1":"Unaided after-training","2":"12","3":"Linear","4":"0.9083194","5":"0.9474136","6":"0.9587358","7":"0.8468114","8":"0.9458549","9":"0.9945619","10":"0.2933439738"},{"1":"Unaided no-training","2":"2","3":"Linear","4":"0.9073823","5":"0.9375626","6":"0.9678098","7":"0.8458034","8":"0.9451009","9":"1.1421143","10":"0.2209939534"},{"1":"Unaided no-training","2":"17","3":"Linear","4":"0.9047938","5":"0.9275612","6":"0.9754545","7":"0.8468708","8":"0.9415007","9":"1.2503784","10":"0.0137812393"},{"1":"Unaided after-training","2":"38","3":"Amended-linear","4":"0.9027654","5":"0.9089835","6":"0.9931592","7":"0.8316248","8":"0.9447548","9":"0.9937183","10":"-0.1172013542"},{"1":"Unaided no-training","2":"37","3":"Amended-linear","4":"0.9026498","5":"0.9420696","6":"0.9581562","7":"0.8378678","8":"0.9423591","9":"1.0697755","10":"0.2877346371"},{"1":"SAD-aided","2":"32","3":"Linear","4":"0.8985144","5":"0.9035114","6":"0.9944694","7":"0.8261077","8":"0.9417338","9":"1.0958691","10":"-0.0523049265"},{"1":"Unaided no-training","2":"25","3":"Amended-linear","4":"0.8983703","5":"0.9192297","6":"0.9773078","7":"0.8273186","8":"0.9411289","9":"1.0805120","10":"-0.2010947101"},{"1":"Unaided no-training","2":"16","3":"Amended-linear","4":"0.8968307","5":"0.9583377","6":"0.9358191","7":"0.8348796","8":"0.9363449","9":"1.1232266","10":"-0.3516337688"},{"1":"Unaided after-training","2":"8","3":"Amended-linear","4":"0.8922408","5":"0.9368755","6":"0.9523580","7":"0.8215978","8":"0.9358953","9":"0.9406403","10":"0.3103300771"},{"1":"Unaided after-training","2":"22","3":"Linear","4":"0.8901906","5":"0.9438348","6":"0.9431636","7":"0.8290241","8":"0.9303086","9":"1.2949141","10":"0.2309910501"},{"1":"SAD-aided","2":"9","3":"Linear","4":"0.8754189","5":"0.9030997","6":"0.9693491","7":"0.7920298","8":"0.9267386","9":"1.1277251","10":"-0.2208487149"},{"1":"Unaided no-training","2":"22","3":"Linear","4":"0.8753784","5":"0.9492385","6":"0.9221902","7":"0.8083019","8":"0.9200224","9":"1.2966164","10":"0.3176404783"},{"1":"Unaided after-training","2":"34","3":"Amended-linear","4":"0.8753495","5":"0.8936403","6":"0.9795323","7":"0.7897482","8":"0.9275109","9":"0.9049099","10":"-0.1783213757"},{"1":"Unaided no-training","2":"3","3":"Amended-linear","4":"0.8661946","5":"0.9282358","6":"0.9331623","7":"0.7862173","8":"0.9176316","9":"1.1960824","10":"0.3333238801"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Saving the stats to use in the over time accuracy analysis</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(stats_data, <span class="st">"data/stats_first_three_rounds.csv"</span>, <span class="at">row.names =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+<section id="overall-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="overall-accuracy">Overall accuracy</h3>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mix_ccc <span class="ot">=</span>  <span class="fu">lmer</span>(ccc <span class="sc">~</span> aid<span class="sc">*</span>sad_structure <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>rater),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span>stats_data)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mix_ccc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: ccc ~ aid * sad_structure + (1 | rater)
+   Data: stats_data
+
+REML criterion at convergence: -543.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.3994 -0.3846  0.3193  0.6108  1.5339 
+
+Random effects:
+ Groups   Name        Variance  Std.Dev.
+ rater    (Intercept) 3.056e-05 0.005528
+ Residual             5.769e-04 0.024019
+Number of obs: 129, groups:  rater, 43
+
+Fixed effects:
+                                                Estimate Std. Error         df
+(Intercept)                                     0.938860   0.005378 122.380727
+aidUnaided after-training                       0.010163   0.007413  81.999999
+aidSAD-aided                                    0.027573   0.007413  81.999999
+sad_structureLinear                            -0.003714   0.007519 122.380727
+aidUnaided after-training:sad_structureLinear   0.006500   0.010363  81.999999
+aidSAD-aided:sad_structureLinear               -0.002303   0.010363  81.999999
+                                              t value Pr(&gt;|t|)    
+(Intercept)                                   174.559  &lt; 2e-16 ***
+aidUnaided after-training                       1.371 0.174095    
+aidSAD-aided                                    3.720 0.000364 ***
+sad_structureLinear                            -0.494 0.622233    
+aidUnaided after-training:sad_structureLinear   0.627 0.532268    
+aidSAD-aided:sad_structureLinear               -0.222 0.824680    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) adUaf- adSAD- sd_stL aUa-:_
+adUnddaftr- -0.689                            
+aidSAD-aidd -0.689  0.500                     
+sd_strctrLn -0.715  0.493  0.493              
+adUaftr-:_L  0.493 -0.715 -0.358 -0.689       
+adSAD-dd:_L  0.493 -0.358 -0.715 -0.689  0.500</code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mix_ccc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"25.9672399","2":"2","3":"2.297659e-06","_rn_":"aid"},{"1":"0.2584162","2":"1","3":"6.112104e-01","_rn_":"sad_structure"},{"1":"0.7762185","2":"2","3":"6.783382e-01","_rn_":"aid:sad_structure"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<section id="tukey-test" class="level4">
+<h4 class="anchored" data-anchor-id="tukey-test">Tukey-test</h4>
+<ul>
+<li>Rounds by SAD structure ::: {.cell}</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>em_ccc1 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_ccc, <span class="st">"aid"</span>, <span class="at">by =</span> <span class="st">"sad_structure"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>cld_acc <span class="ot">=</span> <span class="fu">as.data.frame</span>( <span class="fu">cld</span>(em_ccc1, <span class="at">Letters =</span> letters) )</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_ccc1, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["aid"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sad_structure"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Unaided no-training","2":"Amended-linear","3":"0.9388604","4":"0.00537846","5":"122.3807","6":"0.9282135","7":"0.9495073","8":"a","_rn_":"1"},{"1":"Unaided after-training","2":"Amended-linear","3":"0.9490234","4":"0.00537846","5":"122.3807","6":"0.9383766","7":"0.9596703","8":"ab","_rn_":"2"},{"1":"SAD-aided","2":"Amended-linear","3":"0.9664336","4":"0.00537846","5":"122.3807","6":"0.9557867","7":"0.9770804","8":"b","_rn_":"3"},{"1":"Unaided no-training","2":"Linear","3":"0.9351463","4":"0.00525480","5":"122.3807","6":"0.9247442","7":"0.9455483","8":"a","_rn_":"4"},{"1":"Unaided after-training","2":"Linear","3":"0.9518091","4":"0.00525480","5":"122.3807","6":"0.9414070","7":"0.9622112","8":"ab","_rn_":"5"},{"1":"SAD-aided","2":"Linear","3":"0.9604163","4":"0.00525480","5":"122.3807","6":"0.9500143","7":"0.9708184","8":"b","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<p>:::</p>
+<ul>
+<li>SAD structure by rounds</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>em_ccc2 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_ccc,<span class="st">"sad_structure"</span> , <span class="at">by =</span><span class="st">"aid"</span>, <span class="at">type =</span> <span class="st">"response"</span> )</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_ccc2, <span class="at">Letters =</span> LETTERS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sad_structure"],"name":[1],"type":["fct"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Linear","2":"Unaided no-training","3":"0.9351463","4":"0.00525480","5":"122.3807","6":"0.9247442","7":"0.9455483","8":"A","_rn_":"2"},{"1":"Amended-linear","2":"Unaided no-training","3":"0.9388604","4":"0.00537846","5":"122.3807","6":"0.9282135","7":"0.9495073","8":"A","_rn_":"1"},{"1":"Amended-linear","2":"Unaided after-training","3":"0.9490234","4":"0.00537846","5":"122.3807","6":"0.9383766","7":"0.9596703","8":"A","_rn_":"3"},{"1":"Linear","2":"Unaided after-training","3":"0.9518091","4":"0.00525480","5":"122.3807","6":"0.9414070","7":"0.9622112","8":"A","_rn_":"4"},{"1":"Linear","2":"SAD-aided","3":"0.9604163","4":"0.00525480","5":"122.3807","6":"0.9500143","7":"0.9708184","8":"A","_rn_":"6"},{"1":"Amended-linear","2":"SAD-aided","3":"0.9664336","4":"0.00537846","5":"122.3807","6":"0.9557867","7":"0.9770804","8":"A","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="plot" class="level4">
+<h4 class="anchored" data-anchor-id="plot">Plot</h4>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(em_ccc2) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(aid, emmean, <span class="at">color =</span> sad_structure))<span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> stats_data,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(aid, ccc, <span class="at">fill =</span> sad_structure),</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitterdodge</span>(<span class="at">jitter.width =</span> <span class="fl">0.05</span>, <span class="at">dodge.width =</span> <span class="fl">0.3</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"gray90"</span>)<span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">3</span>),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span> lower.CL, <span class="at">ymax =</span> upper.CL),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> .<span class="dv">3</span>),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="dv">0</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">size =</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> cld_acc, <span class="fu">aes</span>(aid,emmean, <span class="at">label =</span> .group),</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.3</span>),</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">fontface=</span> <span class="st">"bold"</span>,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">show.legend  =</span> F )<span class="sc">+</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_colorblind</span>()<span class="sc">+</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Overall accuracy (CCC)"</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span><span class="st">""</span>,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_half_open</span>()<span class="sc">+</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fl">0.8</span>,<span class="dv">1</span>,<span class="at">by =</span> <span class="fl">0.04</span>),</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.85</span>,<span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># axis.text.x = element_text(angle = 45, hjust = 1)</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>        )<span class="sc">+</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="st">"SAD-aided"</span>, <span class="st">"Unaided after-training"</span>, <span class="st">"Unaided no-training"</span>))<span class="sc">+</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"figs/overall_ccc.png"</span>, <span class="at">dpi =</span> <span class="dv">600</span>, <span class="at">height =</span> <span class="fl">3.5</span>,<span class="at">width =</span><span class="dv">6</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="precision" class="level3">
+<h3 class="anchored" data-anchor-id="precision">Precision</h3>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mix_r <span class="ot">=</span>  <span class="fu">lmer</span>(r <span class="sc">~</span> aid<span class="sc">*</span>sad_structure<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>rater),</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span>stats_data)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mix_r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: r ~ aid * sad_structure + (1 | rater)
+   Data: stats_data
+
+REML criterion at convergence: -626.9
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.4853 -0.2616  0.2422  0.5868  1.2974 
+
+Random effects:
+ Groups   Name        Variance  Std.Dev.
+ rater    (Intercept) 4.025e-05 0.006344
+ Residual             2.728e-04 0.016516
+Number of obs: 129, groups:  rater, 43
+
+Fixed effects:
+                                                Estimate Std. Error         df
+(Intercept)                                    9.546e-01  3.861e-03  1.191e+02
+aidUnaided after-training                      8.057e-03  5.097e-03  8.200e+01
+aidSAD-aided                                   1.754e-02  5.097e-03  8.200e+01
+sad_structureLinear                            8.255e-04  5.398e-03  1.191e+02
+aidUnaided after-training:sad_structureLinear  7.826e-03  7.126e-03  8.200e+01
+aidSAD-aided:sad_structureLinear              -6.493e-03  7.126e-03  8.200e+01
+                                              t value Pr(&gt;|t|)    
+(Intercept)                                   247.243  &lt; 2e-16 ***
+aidUnaided after-training                       1.581 0.117802    
+aidSAD-aided                                    3.441 0.000915 ***
+sad_structureLinear                             0.153 0.878714    
+aidUnaided after-training:sad_structureLinear   1.098 0.275290    
+aidSAD-aided:sad_structureLinear               -0.911 0.364846    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) adUaf- adSAD- sd_stL aUa-:_
+adUnddaftr- -0.660                            
+aidSAD-aidd -0.660  0.500                     
+sd_strctrLn -0.715  0.472  0.472              
+adUaftr-:_L  0.472 -0.715 -0.358 -0.660       
+adSAD-dd:_L  0.472 -0.358 -0.715 -0.660  0.500</code></pre>
+</div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mix_r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"18.504380","2":"2","3":"0.0000959014","_rn_":"aid"},{"1":"0.132061","2":"1","3":"0.7163046569","_rn_":"sad_structure"},{"1":"4.049850","2":"2","3":"0.1320037613","_rn_":"aid:sad_structure"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<section id="tukey-test-1" class="level4">
+<h4 class="anchored" data-anchor-id="tukey-test-1">Tukey-test</h4>
+<ul>
+<li>Rounds by SAD structure</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>em_r1 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_r, <span class="st">"aid"</span>, <span class="at">by =</span> <span class="st">"sad_structure"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_r1, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["aid"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sad_structure"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Unaided no-training","2":"Amended-linear","3":"0.9545882","4":"0.003860929","5":"119.0629","6":"0.9469432","7":"0.9622331","8":"a","_rn_":"1"},{"1":"Unaided after-training","2":"Amended-linear","3":"0.9626450","4":"0.003860929","5":"119.0629","6":"0.9550000","7":"0.9702900","8":"ab","_rn_":"2"},{"1":"SAD-aided","2":"Amended-linear","3":"0.9721253","4":"0.003860929","5":"119.0629","6":"0.9644803","7":"0.9797703","8":"b","_rn_":"3"},{"1":"Unaided no-training","2":"Linear","3":"0.9554136","4":"0.003772160","5":"119.0629","6":"0.9479444","7":"0.9628828","8":"a","_rn_":"4"},{"1":"SAD-aided","2":"Linear","3":"0.9664574","4":"0.003772160","5":"119.0629","6":"0.9589882","7":"0.9739266","8":"ab","_rn_":"6"},{"1":"Unaided after-training","2":"Linear","3":"0.9712968","4":"0.003772160","5":"119.0629","6":"0.9638276","7":"0.9787660","8":"b","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li>SAD structure by rounds</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>em_r2 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_r,<span class="st">"sad_structure"</span> , <span class="at">by =</span><span class="st">"aid"</span>, <span class="at">type =</span> <span class="st">"response"</span> )</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_r2, <span class="at">Letters =</span> LETTERS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sad_structure"],"name":[1],"type":["fct"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Amended-linear","2":"Unaided no-training","3":"0.9545882","4":"0.003860929","5":"119.0629","6":"0.9469432","7":"0.9622331","8":"A","_rn_":"1"},{"1":"Linear","2":"Unaided no-training","3":"0.9554136","4":"0.003772160","5":"119.0629","6":"0.9479444","7":"0.9628828","8":"A","_rn_":"2"},{"1":"Amended-linear","2":"Unaided after-training","3":"0.9626450","4":"0.003860929","5":"119.0629","6":"0.9550000","7":"0.9702900","8":"A","_rn_":"3"},{"1":"Linear","2":"Unaided after-training","3":"0.9712968","4":"0.003772160","5":"119.0629","6":"0.9638276","7":"0.9787660","8":"A","_rn_":"4"},{"1":"Linear","2":"SAD-aided","3":"0.9664574","4":"0.003772160","5":"119.0629","6":"0.9589882","7":"0.9739266","8":"A","_rn_":"6"},{"1":"Amended-linear","2":"SAD-aided","3":"0.9721253","4":"0.003860929","5":"119.0629","6":"0.9644803","7":"0.9797703","8":"A","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="bias-correction-factor" class="level3">
+<h3 class="anchored" data-anchor-id="bias-correction-factor">Bias Correction factor</h3>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mix_cb =  lmer(cb ~ aid*sad_structure+(1|rater),</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                             data =stats_data)</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>mix_cb <span class="ot">=</span>  glmmTMB<span class="sc">::</span><span class="fu">glmmTMB</span>(cb <span class="sc">~</span> aid<span class="sc">*</span>sad_structure<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>rater),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family=</span><span class="fu">list</span>(<span class="at">family=</span><span class="st">"beta"</span>,<span class="at">link=</span><span class="st">"logit"</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span>stats_data)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mix_cb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code> Family: beta  ( logit )
+Formula:          cb ~ aid * sad_structure + (1 | rater)
+Data: stats_data
+
+     AIC      BIC   logLik deviance df.resid 
+  -849.5   -826.6    432.7   -865.5      121 
+
+Random effects:
+
+Conditional model:
+ Groups Name        Variance Std.Dev.
+ rater  (Intercept) 0.009815 0.09907 
+Number of obs: 129, groups:  rater, 43
+
+Dispersion parameter for beta family (): 82.3 
+
+Conditional model:
+                                              Estimate Std. Error z value
+(Intercept)                                     4.3775     0.1823  24.018
+aidUnaided after-training                      -0.1571     0.2382  -0.659
+aidSAD-aided                                    0.3653     0.2579   1.416
+sad_structureLinear                            -0.4966     0.2267  -2.191
+aidUnaided after-training:sad_structureLinear   0.1872     0.3147   0.595
+aidSAD-aided:sad_structureLinear                0.4892     0.3445   1.420
+                                              Pr(&gt;|z|)    
+(Intercept)                                     &lt;2e-16 ***
+aidUnaided after-training                       0.5097    
+aidSAD-aided                                    0.1567    
+sad_structureLinear                             0.0285 *  
+aidUnaided after-training:sad_structureLinear   0.5520    
+aidSAD-aided:sad_structureLinear                0.1555    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mix_cb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"15.606422","2":"2","3":"0.0004084214","_rn_":"aid"},{"1":"4.576485","2":"1","3":"0.0324136435","_rn_":"sad_structure"},{"1":"2.021169","2":"2","3":"0.3640061110","_rn_":"aid:sad_structure"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<section id="tukey-test-2" class="level4">
+<h4 class="anchored" data-anchor-id="tukey-test-2">Tukey-test</h4>
+<ul>
+<li>Rounds by SAD structure</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>em_cb1 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_cb, <span class="st">"aid"</span>, <span class="at">by =</span> <span class="st">"sad_structure"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_cb1, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["aid"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sad_structure"],"name":[2],"type":["fct"],"align":["left"]},{"label":["response"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Unaided after-training","2":"Amended-linear","3":"0.9855202","4":"0.002531077","5":"121","6":"0.9795531","7":"0.9897640","8":"a","_rn_":"2"},{"1":"Unaided no-training","2":"Amended-linear","3":"0.9875990","4":"0.002232139","5":"121","6":"0.9823060","7":"0.9913227","8":"a","_rn_":"1"},{"1":"SAD-aided","2":"Amended-linear","3":"0.9913609","4":"0.001814139","5":"121","6":"0.9869190","7":"0.9943032","8":"a","_rn_":"3"},{"1":"Unaided no-training","2":"Linear","3":"0.9797851","4":"0.003006198","5":"121","6":"0.9728915","7":"0.9849528","8":"a","_rn_":"4"},{"1":"Unaided after-training","2":"Linear","3":"0.9803722","4":"0.002934855","5":"121","6":"0.9736359","7":"0.9854131","8":"a","_rn_":"5"},{"1":"SAD-aided","2":"Linear","3":"0.9912975","4":"0.001884226","5":"121","6":"0.9866526","7":"0.9943353","8":"b","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li>SAD structure by rounds</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>em_cb2 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_cb,<span class="st">"sad_structure"</span> , <span class="at">by =</span><span class="st">"aid"</span>, <span class="at">type =</span> <span class="st">"response"</span> )</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_cb2, <span class="at">Letters =</span> LETTERS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sad_structure"],"name":[1],"type":["fct"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["response"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Linear","2":"Unaided no-training","3":"0.9797851","4":"0.003006198","5":"121","6":"0.9728915","7":"0.9849528","8":"A","_rn_":"2"},{"1":"Amended-linear","2":"Unaided no-training","3":"0.9875990","4":"0.002232139","5":"121","6":"0.9823060","7":"0.9913227","8":"B","_rn_":"1"},{"1":"Linear","2":"Unaided after-training","3":"0.9803722","4":"0.002934855","5":"121","6":"0.9736359","7":"0.9854131","8":"A","_rn_":"4"},{"1":"Amended-linear","2":"Unaided after-training","3":"0.9855202","4":"0.002531077","5":"121","6":"0.9795531","7":"0.9897640","8":"A","_rn_":"3"},{"1":"Linear","2":"SAD-aided","3":"0.9912975","4":"0.001884226","5":"121","6":"0.9866526","7":"0.9943353","8":"A","_rn_":"6"},{"1":"Amended-linear","2":"SAD-aided","3":"0.9913609","4":"0.001814139","5":"121","6":"0.9869190","7":"0.9943032","8":"A","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="location-shift" class="level3">
+<h3 class="anchored" data-anchor-id="location-shift">Location shift</h3>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mix_l.shift <span class="ot">=</span>  <span class="fu">lmer</span>(l.shift <span class="sc">~</span> aid<span class="sc">*</span>sad_structure<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>rater),</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span>stats_data)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mix_l.shift)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: l.shift ~ aid * sad_structure + (1 | rater)
+   Data: stats_data
+
+REML criterion at convergence: -146.1
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-2.81614 -0.49484 -0.02702  0.67441  2.00504 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ rater    (Intercept) 0.007296 0.08542 
+ Residual             0.010579 0.10285 
+Number of obs: 129, groups:  rater, 43
+
+Fixed effects:
+                                              Estimate Std. Error       df
+(Intercept)                                    0.01844    0.02918 92.25837
+aidUnaided after-training                     -0.07017    0.03174 82.00000
+aidSAD-aided                                   0.01892    0.03174 82.00000
+sad_structureLinear                            0.09681    0.04079 92.25837
+aidUnaided after-training:sad_structureLinear  0.01264    0.04438 82.00000
+aidSAD-aided:sad_structureLinear              -0.16465    0.04438 82.00000
+                                              t value Pr(&gt;|t|)    
+(Intercept)                                     0.632 0.528874    
+aidUnaided after-training                      -2.211 0.029840 *  
+aidSAD-aided                                    0.596 0.552676    
+sad_structureLinear                             2.374 0.019691 *  
+aidUnaided after-training:sad_structureLinear   0.285 0.776521    
+aidSAD-aided:sad_structureLinear               -3.710 0.000376 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) adUaf- adSAD- sd_stL aUa-:_
+adUnddaftr- -0.544                            
+aidSAD-aidd -0.544  0.500                     
+sd_strctrLn -0.715  0.389  0.389              
+adUaftr-:_L  0.389 -0.715 -0.358 -0.544       
+adSAD-dd:_L  0.389 -0.358 -0.715 -0.544  0.500</code></pre>
+</div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mix_l.shift)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"11.282305","2":"2","3":"3.548775e-03","_rn_":"aid"},{"1":"2.113801","2":"1","3":"1.459763e-01","_rn_":"sad_structure"},{"1":"19.872498","2":"2","3":"4.838846e-05","_rn_":"aid:sad_structure"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<section id="tukey-test-3" class="level4">
+<h4 class="anchored" data-anchor-id="tukey-test-3">Tukey-test</h4>
+<ul>
+<li>Rounds by SAD structure</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>em_l.shift1 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_l.shift, <span class="st">"aid"</span>, <span class="at">by =</span> <span class="st">"sad_structure"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_l.shift1, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["aid"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sad_structure"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Unaided after-training","2":"Amended-linear","3":"-0.05172990","4":"0.02917542","5":"92.25837","6":"-0.109672637","7":"0.006212842","8":"a","_rn_":"2"},{"1":"Unaided no-training","2":"Amended-linear","3":"0.01844229","4":"0.02917542","5":"92.25837","6":"-0.039500450","7":"0.076385028","8":"ab","_rn_":"1"},{"1":"SAD-aided","2":"Amended-linear","3":"0.03736700","4":"0.02917542","5":"92.25837","6":"-0.020575742","7":"0.095309737","8":"b","_rn_":"3"},{"1":"SAD-aided","2":"Linear","3":"-0.03046967","4":"0.02850463","5":"92.25837","6":"-0.087080214","7":"0.026140874","8":"a","_rn_":"6"},{"1":"Unaided after-training","2":"Linear","3":"0.05772280","4":"0.02850463","5":"92.25837","6":"0.001112256","7":"0.114333344","8":"b","_rn_":"5"},{"1":"Unaided no-training","2":"Linear","3":"0.11525692","4":"0.02850463","5":"92.25837","6":"0.058646372","7":"0.171867461","8":"b","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li>SAD structure by rounds</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>em_l.shift2 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_l.shift,<span class="st">"sad_structure"</span> , <span class="at">by =</span><span class="st">"aid"</span>, <span class="at">type =</span> <span class="st">"response"</span> )</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_l.shift2, <span class="at">Letters =</span> LETTERS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sad_structure"],"name":[1],"type":["fct"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Amended-linear","2":"Unaided no-training","3":"0.01844229","4":"0.02917542","5":"92.25837","6":"-0.039500450","7":"0.076385028","8":"A","_rn_":"1"},{"1":"Linear","2":"Unaided no-training","3":"0.11525692","4":"0.02850463","5":"92.25837","6":"0.058646372","7":"0.171867461","8":"B","_rn_":"2"},{"1":"Amended-linear","2":"Unaided after-training","3":"-0.05172990","4":"0.02917542","5":"92.25837","6":"-0.109672637","7":"0.006212842","8":"A","_rn_":"3"},{"1":"Linear","2":"Unaided after-training","3":"0.05772280","4":"0.02850463","5":"92.25837","6":"0.001112256","7":"0.114333344","8":"B","_rn_":"4"},{"1":"Linear","2":"SAD-aided","3":"-0.03046967","4":"0.02850463","5":"92.25837","6":"-0.087080214","7":"0.026140874","8":"A","_rn_":"6"},{"1":"Amended-linear","2":"SAD-aided","3":"0.03736700","4":"0.02917542","5":"92.25837","6":"-0.020575742","7":"0.095309737","8":"A","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="scale-shift" class="level3">
+<h3 class="anchored" data-anchor-id="scale-shift">Scale shift</h3>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>mix_s.shift <span class="ot">=</span>  <span class="fu">lmer</span>(s.shift <span class="sc">~</span> aid<span class="sc">*</span>sad_structure<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>rater),</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span>stats_data)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mix_s.shift)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+lmerModLmerTest]
+Formula: s.shift ~ aid * sad_structure + (1 | rater)
+   Data: stats_data
+
+REML criterion at convergence: -312.8
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-2.0741 -0.5703 -0.0303  0.3972  2.5560 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ rater    (Intercept) 0.001550 0.03937 
+ Residual             0.002878 0.05364 
+Number of obs: 129, groups:  rater, 43
+
+Fixed effects:
+                                               Estimate Std. Error        df
+(Intercept)                                    1.063989   0.014520 98.789158
+aidUnaided after-training                     -0.015343   0.016555 82.000000
+aidSAD-aided                                  -0.021877   0.016555 82.000000
+sad_structureLinear                            0.044884   0.020300 98.789158
+aidUnaided after-training:sad_structureLinear -0.002368   0.023144 82.000000
+aidSAD-aided:sad_structureLinear              -0.024125   0.023144 82.000000
+                                              t value Pr(&gt;|t|)    
+(Intercept)                                    73.277   &lt;2e-16 ***
+aidUnaided after-training                      -0.927   0.3567    
+aidSAD-aided                                   -1.321   0.1900    
+sad_structureLinear                             2.211   0.0293 *  
+aidUnaided after-training:sad_structureLinear  -0.102   0.9188    
+aidSAD-aided:sad_structureLinear               -1.042   0.3003    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Correlation of Fixed Effects:
+            (Intr) adUaf- adSAD- sd_stL aUa-:_
+adUnddaftr- -0.570                            
+aidSAD-aidd -0.570  0.500                     
+sd_strctrLn -0.715  0.408  0.408              
+adUaftr-:_L  0.408 -0.715 -0.358 -0.570       
+adSAD-dd:_L  0.408 -0.358 -0.715 -0.570  0.500</code></pre>
+</div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">Anova</span>(mix_s.shift)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Chisq"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Df"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Pr(>Chisq)"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"8.752236","2":"2","3":"0.01257408","_rn_":"aid"},{"1":"5.565965","2":"1","3":"0.01831291","_rn_":"sad_structure"},{"1":"1.320498","2":"2","3":"0.51672266","_rn_":"aid:sad_structure"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<section id="tukey-test-4" class="level4">
+<h4 class="anchored" data-anchor-id="tukey-test-4">Tukey-test</h4>
+<ul>
+<li>Rounds by SAD structure</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>em_s.shift1 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_s.shift, <span class="st">"aid"</span>, <span class="at">by =</span> <span class="st">"sad_structure"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_s.shift1, <span class="at">Letters =</span> letters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["aid"],"name":[1],"type":["fct"],"align":["left"]},{"label":["sad_structure"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"SAD-aided","2":"Amended-linear","3":"1.042112","4":"0.01452011","5":"98.78916","6":"1.013300","7":"1.070923","8":"a","_rn_":"3"},{"1":"Unaided after-training","2":"Amended-linear","3":"1.048646","4":"0.01452011","5":"98.78916","6":"1.019834","7":"1.077458","8":"a","_rn_":"2"},{"1":"Unaided no-training","2":"Amended-linear","3":"1.063989","4":"0.01452011","5":"98.78916","6":"1.035177","7":"1.092801","8":"a","_rn_":"1"},{"1":"SAD-aided","2":"Linear","3":"1.062870","4":"0.01418627","5":"98.78916","6":"1.034721","7":"1.091020","8":"a","_rn_":"6"},{"1":"Unaided after-training","2":"Linear","3":"1.091162","4":"0.01418627","5":"98.78916","6":"1.063013","7":"1.119311","8":"ab","_rn_":"5"},{"1":"Unaided no-training","2":"Linear","3":"1.108873","4":"0.01418627","5":"98.78916","6":"1.080723","7":"1.137022","8":"b","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<ul>
+<li>SAD structure by rounds</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>em_s.shift2 <span class="ot">=</span> <span class="fu">emmeans</span>(mix_s.shift,<span class="st">"sad_structure"</span> , <span class="at">by =</span><span class="st">"aid"</span>, <span class="at">type =</span> <span class="st">"response"</span> )</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cld</span>(em_s.shift2, <span class="at">Letters =</span> LETTERS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["sad_structure"],"name":[1],"type":["fct"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["emmean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["SE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["lower.CL"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["upper.CL"],"name":[7],"type":["dbl"],"align":["right"]},{"label":[".group"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Amended-linear","2":"Unaided no-training","3":"1.063989","4":"0.01452011","5":"98.78916","6":"1.035177","7":"1.092801","8":"A","_rn_":"1"},{"1":"Linear","2":"Unaided no-training","3":"1.108873","4":"0.01418627","5":"98.78916","6":"1.080723","7":"1.137022","8":"B","_rn_":"2"},{"1":"Amended-linear","2":"Unaided after-training","3":"1.048646","4":"0.01452011","5":"98.78916","6":"1.019834","7":"1.077458","8":"A","_rn_":"3"},{"1":"Linear","2":"Unaided after-training","3":"1.091162","4":"0.01418627","5":"98.78916","6":"1.063013","7":"1.119311","8":"B","_rn_":"4"},{"1":"Amended-linear","2":"SAD-aided","3":"1.042112","4":"0.01452011","5":"98.78916","6":"1.013300","7":"1.070923","8":"A","_rn_":"5"},{"1":"Linear","2":"SAD-aided","3":"1.062870","4":"0.01418627","5":"98.78916","6":"1.034721","7":"1.091020","8":"A","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="gain-in-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="gain-in-accuracy">Gain in accuracy</h3>
+<section id="unaided-no-training-to-sad-aided" class="level4">
+<h4 class="anchored" data-anchor-id="unaided-no-training-to-sad-aided">Unaided no-training to SAD-aided</h4>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>g1_slope <span class="ot">=</span> stats_data <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(rater, sad_structure, ccc, aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> ccc,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope1 =</span><span class="st">`</span><span class="at">SAD-aided</span><span class="st">`</span><span class="sc">-</span> <span class="st">`</span><span class="at">Unaided no-training</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Unaided no-training</span><span class="st">`</span>,slope1,<span class="at">fill=</span> slope1, <span class="at">label =</span> rater ))<span class="sc">+</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span><span class="fl">2.5</span>, <span class="at">shape =</span> <span class="dv">21</span>)<span class="sc">+</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_text(size = 2)+</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span><span class="st">"B"</span>, <span class="at">limits =</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.12</span>))<span class="sc">+</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal_hgrid</span>(<span class="at">font_size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">expression</span>(<span class="st">"Unaided no-training "</span><span class="sc">%-&gt;%</span><span class="st">" SAD-aided"</span>),</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Gain in accuracy"</span>)<span class="sc">+</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_rep_wrap</span>(<span class="sc">~</span>sad_structure, <span class="at">nrow =</span><span class="dv">1</span>)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>g1_slope</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="unaided-after-training-to-sad-aided" class="level4">
+<h4 class="anchored" data-anchor-id="unaided-after-training-to-sad-aided">Unaided after-training to SAD-aided</h4>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>g2_slope <span class="ot">=</span> stats_data <span class="sc">%&gt;%</span> </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(rater, sad_structure, ccc, aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> ccc,</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope1 =</span> <span class="st">`</span><span class="at">SAD-aided</span><span class="st">`</span> <span class="sc">-</span> <span class="st">`</span><span class="at">Unaided after-training</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Unaided after-training</span><span class="st">`</span>,slope1, <span class="at">fill =</span> slope1 ))<span class="sc">+</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span><span class="fl">2.5</span>, <span class="at">shape =</span> <span class="dv">21</span>)<span class="sc">+</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span><span class="st">"B"</span>, <span class="at">limits =</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.12</span>))<span class="sc">+</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal_hgrid</span>(<span class="at">font_size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="fu">expression</span>(<span class="st">"Unaided after-training "</span><span class="sc">%-&gt;%</span><span class="st">" SAD-aided"</span>),</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Gain in accuracy"</span>)<span class="sc">+</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_rep_wrap</span>(<span class="sc">~</span>sad_structure, <span class="at">nrow =</span><span class="dv">1</span>)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>g2_slope</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="unaided-no-training-to-unaided-after-training" class="level4">
+<h4 class="anchored" data-anchor-id="unaided-no-training-to-unaided-after-training">Unaided no-training to Unaided after-training</h4>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>g3_slope <span class="ot">=</span> stats_data <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(rater, sad_structure, ccc, aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> ccc,</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">names_from =</span> aid) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">slope1 =</span><span class="st">`</span><span class="at">Unaided after-training</span><span class="st">`</span><span class="sc">-</span> <span class="st">`</span><span class="at">Unaided no-training</span><span class="st">`</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">Unaided no-training</span><span class="st">`</span>,slope1, <span class="at">fill =</span> slope1 ))<span class="sc">+</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)<span class="sc">+</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span><span class="fl">2.5</span>, <span class="at">shape =</span><span class="dv">21</span>)<span class="sc">+</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span><span class="st">"B"</span>, <span class="at">limits =</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.12</span>))<span class="sc">+</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal_hgrid</span>(<span class="at">font_size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="co">#subtitle = "Un. after-training - Un. no-training",</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="fu">expression</span>(<span class="st">"Unaided no-training "</span><span class="sc">%-&gt;%</span><span class="st">" Unaided after-training"</span>),</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Gain in accuracy"</span>)<span class="sc">+</span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_rep_wrap</span>(<span class="sc">~</span>sad_structure, <span class="at">nrow =</span><span class="dv">1</span>)</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>g3_slope</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># "Un. after-training \u2192 Un. no-training)""\u2192"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="figure" class="level4">
+<h4 class="anchored" data-anchor-id="figure">Figure</h4>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>g1_slope<span class="sc">+</span>g2_slope<span class="sc">+</span>g3_slope<span class="sc">+</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)<span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>, <span class="at">ncol =</span> <span class="dv">1</span>)<span class="sc">&amp;</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">0.85</span>, <span class="dv">1</span>))<span class="sc">&amp;</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_half_open</span>(<span class="at">font_size =</span> <span class="dv">12</span>)<span class="sc">&amp;</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># background_grid()&amp;</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">0.12</span>))<span class="sc">&amp;</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span><span class="dv">10</span>),</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="validation_calo_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"figs/slope.png"</span>,<span class="at">dpi =</span> <span class="dv">600</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">width =</span> <span class="dv">7</span>, <span class="at">bg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="interrater-reliability" class="level2">
+<h2 class="anchored" data-anchor-id="interrater-reliability">Interrater reliability</h2>
+<section id="overall-concordance-coefficient" class="level3">
+<h3 class="anchored" data-anchor-id="overall-concordance-coefficient">Overall concordance coefficient</h3>
+<div class="cell">
+<div class="sourceCode" id="cb47"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>sads <span class="ot">=</span> <span class="fu">unique</span>(all_data<span class="sc">$</span>sad_structure)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>aid_step <span class="ot">=</span> <span class="fu">unique</span>(all_data<span class="sc">$</span>aid)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>box_occc <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(sads)){</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(aid_step)){</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>occc_df <span class="ot">=</span> all_data <span class="sc">%&gt;%</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sad_structure <span class="sc">==</span> sads[i],</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>         aid <span class="sc">==</span> aid_step[j]) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(leaf, rater, estimate) <span class="sc">%&gt;%</span> </span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(rater, estimate, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">epi.occc</span>(<span class="at">na.rm =</span> <span class="cn">FALSE</span>, <span class="at">pairs =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>occc_lil <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">sad_structure =</span> sads[i],</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">aid =</span> aid_step[j],</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>                        <span class="at">occc =</span> occc_df<span class="sc">$</span>occc,</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">precision =</span> occc_df<span class="sc">$</span>oprec,</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>                      <span class="at">accuracy =</span> occc_df<span class="sc">$</span>oaccu)</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>box_occc <span class="ot">=</span> <span class="fu">bind_rows</span>(box_occc, occc_lil)</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>box_occc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["sad_structure"],"name":[1],"type":["chr"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["occc"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["precision"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["accuracy"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Amended-linear","2":"SAD-aided","3":"0.8689198","4":"0.8985427","5":"0.9670323"},{"1":"Amended-linear","2":"Unaided after-training","3":"0.8440446","4":"0.8896568","5":"0.9487307"},{"1":"Amended-linear","2":"Unaided no-training","3":"0.8251962","4":"0.8719293","5":"0.9464026"},{"1":"Linear","2":"SAD-aided","3":"0.8580437","4":"0.8890477","5":"0.9651267"},{"1":"Linear","2":"Unaided after-training","3":"0.8658284","4":"0.9131898","5":"0.9481363"},{"1":"Linear","2":"Unaided no-training","3":"0.8445158","4":"0.8792799","5":"0.9604630"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+</section>
+<section id="intra-class-correlation-coefficient" class="level3">
+<h3 class="anchored" data-anchor-id="intra-class-correlation-coefficient">Intra-class correlation coefficient</h3>
+<div class="cell">
+<div class="sourceCode" id="cb48"><pre class="sourceCode r cell-code code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>sads <span class="ot">=</span> <span class="fu">unique</span>(all_data<span class="sc">$</span>sad_structure)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>aid_step <span class="ot">=</span> <span class="fu">unique</span>(all_data<span class="sc">$</span>aid)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>box_icc <span class="ot">=</span> <span class="cn">NULL</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(sads)){</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(aid_step)){</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>iccc_df <span class="ot">=</span> all_data <span class="sc">%&gt;%</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sad_structure <span class="sc">==</span> sads[i],</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>         aid <span class="sc">==</span> aid_step[j]) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(leaf, rater, estimate) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(rater, estimate, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">icc</span>(<span class="at">model =</span> <span class="st">"twoway"</span>, <span class="at">unit =</span> <span class="st">"single"</span>, <span class="at">type =</span> <span class="st">"agreement"</span>) </span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>icc_lil <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">sad_structure =</span> sads[i],</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>                      <span class="at">aid =</span> aid_step[j],</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>                        <span class="at">icc =</span> iccc_df<span class="sc">$</span>value,</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">lower =</span> iccc_df<span class="sc">$</span>lbound,</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>                      <span class="at">upper =</span> iccc_df<span class="sc">$</span>ubound)</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>box_icc <span class="ot">=</span> <span class="fu">bind_rows</span>(box_icc, icc_lil)</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>box_icc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["sad_structure"],"name":[1],"type":["chr"],"align":["left"]},{"label":["aid"],"name":[2],"type":["fct"],"align":["left"]},{"label":["icc"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["lower"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["upper"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Amended-linear","2":"SAD-aided","3":"0.8710106","4":"0.8192783","5":"0.9158748"},{"1":"Amended-linear","2":"Unaided after-training","3":"0.8462322","4":"0.7843948","5":"0.8996030"},{"1":"Amended-linear","2":"Unaided no-training","3":"0.8276402","4":"0.7609453","5":"0.8864311"},{"1":"Linear","2":"SAD-aided","3":"0.8602555","4":"0.8051004","5":"0.9084937"},{"1":"Linear","2":"Unaided after-training","3":"0.8676248","4":"0.8108858","5":"0.9148271"},{"1":"Linear","2":"Unaided no-training","3":"0.8468932","4":"0.7876480","5":"0.8992480"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+
+
+
+</section>
+</section>
+</main> <!-- /main -->
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+    } else {
+      disableStylesheet(alternateStylesheets);
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    setTimeout(function() {
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./about.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About the study</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./window_based_calo.html" class="pagination-link">
+        <span class="nav-page-text">Window-based accuracy</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright © 2022 Kaique S. Alves</div>
+  </div>
+</footer>
+
+
+</body></html>
